@@ -69,6 +69,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     private fun registerUser() {
         // ToDo:: -Register- *1* / Priority: High
         // Description: Create user and navigate to HomeScreen
+        showSnackbar("Usuario registrado correctamente")
     }
 
     private fun showSnackbar(msg: String) {
