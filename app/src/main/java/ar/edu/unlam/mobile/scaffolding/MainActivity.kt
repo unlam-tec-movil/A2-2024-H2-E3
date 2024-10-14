@@ -11,17 +11,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ar.edu.unlam.mobile.scaffolding.data.local.TuitDataSource
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
-import ar.edu.unlam.mobile.scaffolding.ui.screens.TuitViewModel
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    MainScreen(tuitViewModel = TuitViewModel(TuitDataSource()))
+                    MainScreen()
                 }
             }
         }
@@ -44,12 +45,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(tuitViewModel: TuitViewModel) {
+fun MainScreen() {
     // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
     // para navegar como naviegate y también la información de en dónde se "encuentra" el usuario
     // a través del back stack
-    val listTuits: List<Tuit> = tuitViewModel.listTuits
     val controller = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         bottomBar = { BottomBar(controller = controller) },
         floatingActionButton = {
@@ -57,6 +58,7 @@ fun MainScreen(tuitViewModel: TuitViewModel) {
                 Icon(Icons.Filled.Home, contentDescription = "Home")
             }
         },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
@@ -65,7 +67,11 @@ fun MainScreen(tuitViewModel: TuitViewModel) {
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
             composable("home") {
                 // Home es el componente en sí que es el destino de navegación.
-                HomeScreen(listTuits, modifier = Modifier.padding(paddingValue))
+                HomeScreen(modifier = Modifier.padding(paddingValue)) {
+                    LaunchedEffect(snackbarHostState) {
+                        snackbarHostState.showSnackbar(message = it, actionLabel = "Retry message")
+                    }
+                }
             }
         }
     }

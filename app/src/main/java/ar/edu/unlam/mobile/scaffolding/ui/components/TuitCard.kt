@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import coil.compose.AsyncImage
 
+
 @Composable
 fun TuitCard(tuit: Tuit) {
     Card(
