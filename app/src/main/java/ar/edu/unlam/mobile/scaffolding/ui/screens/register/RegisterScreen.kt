@@ -55,6 +55,17 @@ fun RegisterScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
+            OutlinedTextField(value = state.emailTextField,
+                onValueChange = {
+                    viewModel.onRegistrationEvent(RegisterEvents.UpdateEmail(it))
+                },
+                label = { Text("Email") },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
+
             OutlinedTextField(value = state.usernameTextField,
                 onValueChange = {
                     viewModel.onRegistrationEvent(RegisterEvents.UpdateUsername(it))

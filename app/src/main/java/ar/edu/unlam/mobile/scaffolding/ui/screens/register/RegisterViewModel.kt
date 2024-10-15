@@ -25,6 +25,11 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
 
     fun onRegistrationEvent(event: RegisterEvents) {
         when (event) {
+            is RegisterEvents.UpdateEmail -> {
+                _registerState.value = registerState.value.copy(
+                    emailTextField = event.email
+                )
+            }
             is RegisterEvents.UpdateUsername -> {
                 _registerState.value = registerState.value.copy(
                     usernameTextField = event.username
@@ -42,7 +47,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
             }
             RegisterEvents.RegisterUser -> {
                 val state = _registerState.value
-                val areFieldsValid = validateFields(state.usernameTextField, state.passwordTextField, state.confirmPasswordTextField)
+                val areFieldsValid = validateFields(state.emailTextField,state.usernameTextField, state.passwordTextField, state.confirmPasswordTextField)
                 val isPasswordValid = validatePassword(state.passwordTextField, state.confirmPasswordTextField)
 
                 if (!areFieldsValid) {
@@ -56,8 +61,9 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun validateFields(user: String, password: String, confirmPassword: String): Boolean {
-        return !(user.isBlank() ||
+    private fun validateFields(email: String,user: String, password: String, confirmPassword: String): Boolean {
+        return !(email.isBlank() ||
+                user.isBlank() ||
                 password.isBlank() ||
                 confirmPassword.isBlank())
     }
