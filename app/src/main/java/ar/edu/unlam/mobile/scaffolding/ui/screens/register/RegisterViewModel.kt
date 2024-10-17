@@ -45,6 +45,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                     confirmPasswordTextField = event.password
                 )
             }
+
             RegisterEvents.RegisterUser -> {
                 val state = _registerState.value
                 val areFieldsValid = validateFields(state.emailTextField,state.usernameTextField, state.passwordTextField, state.confirmPasswordTextField)

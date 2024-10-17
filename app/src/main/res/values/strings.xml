@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ScaffoldingV2</string>
+    <string name="registration_email_label">Email</string>
+    <string name="registration_button_text">Registrarse</string>
 </resources>
