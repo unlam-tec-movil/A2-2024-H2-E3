@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ScaffoldingV2</string>
-    <string name="registration_email_label">Email</string>
+    <string name="email_label">Email</string>
     <string name="registration_button_text">Registrarse</string>
+    <string name="username_label">Nombre de usuario</string>
+    <string name="password_label">Contraseña</string>
+    <string name="confirm_password_label">Confirmar contraseña</string>
 </resources>

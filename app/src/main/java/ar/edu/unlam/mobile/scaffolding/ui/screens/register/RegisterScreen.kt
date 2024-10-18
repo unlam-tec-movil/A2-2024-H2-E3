@@ -60,9 +60,31 @@ fun RegisterScreen(
                         )
                     )
                 },
+                onUsernameChange = { inputString ->
+                    viewModel.onRegistrationEvent(
+                        event = RegisterEvents.UpdateUsername(
+                            username = inputString
+                        )
+                    )
+                },
+                onPasswordChange = { inputString ->
+                    viewModel.onRegistrationEvent(
+                        event = RegisterEvents.UpdatePassword(
+                            password = inputString
+                        )
+                    )
+                },
+                onConfirmPasswordChange = { inputString ->
+                    viewModel.onRegistrationEvent(
+                        event = RegisterEvents.UpdateConfirmPassword(
+                            password = inputString
+                        )
+                    )
+                },
                 onSubmit = {
                     viewModel.onRegistrationEvent(event = RegisterEvents.RegisterUser)
-                })
+                }
+            )
 
         }
     }

@@ -22,27 +22,73 @@ fun EmailTextField(
         modifier = modifier,
         value = value,
         onValueChange = onValueChange,
-        label = {
-            Text(text = label)
-        },
+        label = {Text(text = label)},
         maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email
-        ),
-        isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        }
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        isError = isError
     )
+}
 
+@Composable
+fun UsernameTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean = false,
+) {
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        isError = isError
+    )
+}
+
+@Composable
+fun PasswordTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean = false,
+){
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        isError = isError
+    )
+}
+
+@Composable
+fun ConfirmPasswordTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean = false,
+){
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        isError = isError
+    )
 }
 
 @Composable
 fun ErrorTextInputField(
-    modifier: Modifier = Modifier,
-    text: String
+    modifier: Modifier = Modifier, text: String
 ) {
     Text(
         modifier = modifier,
