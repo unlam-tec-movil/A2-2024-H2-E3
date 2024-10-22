@@ -57,10 +57,12 @@ fun TuitCard(tuit: Tuit) {
             Spacer(modifier = Modifier.width(4.dp))
 
             TuitLike(tuit)
+            TuitLikesCounter(tuit)
 
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             TuitReply(tuit)
+            TuitRepliesCounter(tuit)
         }
     }
 }
@@ -133,4 +135,24 @@ fun TuitLike(tuit: Tuit) {
             contentDescription = "add like",
         )
     }
+}
+
+@Composable
+fun TuitLikesCounter(tuit: Tuit) {
+    Text(
+        text = tuit.likes.toString(),
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(4.dp)  // Espaciado para que no quede muy apretado
+    )
+}
+
+@Composable
+fun TuitRepliesCounter(tuit: Tuit) {
+    Text(
+        text = tuit.replies.toString(),
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(4.dp)
+    )
 }
