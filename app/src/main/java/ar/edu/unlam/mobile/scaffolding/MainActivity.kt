@@ -51,13 +51,15 @@ fun MainScreen() {
     // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
     // para navegar como naviegate y también la información de en dónde se "encuentra" el usuario
     // a través del back stack
-    val controller = rememberNavController()
+    val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
+        //TODO:: -BottomBar- *1* / Priority: Medium
+        // Description: Eliminar bottomBar de la pantalla de login y registro.
         bottomBar = { BottomBar(controller = navController) },
         floatingActionButton = {
-            IconButton(onClick = { navController.navigate("home") }) {
-                Icon(Icons.Filled.Home, contentDescription = "Home")
+            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
+                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
             }
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -69,7 +71,14 @@ fun MainScreen() {
         ) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
-            composable("home") {
+            composable(NavigationRoutes.RegisterScreen.route) {
+                RegisterScreen(
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
+            composable(NavigationRoutes.HomeScreen.route) {
                 // Home es el componente en sí que es el destino de navegación.
                 HomeScreen(modifier = Modifier.padding(paddingValue)) {
                     LaunchedEffect(snackbarHostState) {
