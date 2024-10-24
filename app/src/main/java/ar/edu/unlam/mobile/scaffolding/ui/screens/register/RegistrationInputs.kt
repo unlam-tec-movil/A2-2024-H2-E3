@@ -35,8 +35,8 @@ fun RegistrationInputs(
             value = registrationState.emailTextField,
             onValueChange = onEmailChange,
             label = stringResource(id = R.string.email_label),
-//            isError = registrationState.errorState.emailIdErrorState.hasError,
-//            errorText = stringResource(id = registrationState.errorState.emailIdErrorState.errorMessageStringResource)
+//            isError = registrationState.errorState.emailErrorState.hasError,
+//            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
         )
         // Username
         UsernameTextField(

@@ -4,5 +4,5 @@ data class RegisterState(
     val emailTextField: String = "",
     val usernameTextField: String = "",
     val passwordTextField: String = "",
-    val confirmPasswordTextField: String = ""
+    val confirmPasswordTextField: String = "",
 )

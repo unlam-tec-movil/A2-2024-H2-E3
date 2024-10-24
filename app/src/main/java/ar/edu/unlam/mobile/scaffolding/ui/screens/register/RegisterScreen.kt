@@ -19,25 +19,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegisterEvents
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.UserEvents
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegisterScreen(
+    onNavigateToHomeScreen: () -> Unit,
     modifier: Modifier = Modifier, viewModel: RegisterViewModel = hiltViewModel()
 ) {
-    val state by remember { viewModel.registerState }
+    val registerState by remember { viewModel.registerState }
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.userEventsState.collectLatest {
-            if (it.snackbarMessage.isNotBlank()) {
-                snackBarHostState.showSnackbar(message = it.snackbarMessage)
+        viewModel.userEventsState.collectLatest { event ->
+            when(event){
+                is UserEvents.NavigateToHome -> onNavigateToHomeScreen()
+                is UserEvents.ShowError -> snackBarHostState.showSnackbar(event.message)
             }
         }
     }
 
     Scaffold(modifier = modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(hostState = snackBarHostState) } ){ padding ->
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,7 +55,7 @@ fun RegisterScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
             RegistrationInputs(
-                registrationState = state,
+                registrationState = registerState,
                 onEmailChange = { inputString ->
                     viewModel.onRegistrationEvent(
                         event = RegisterEvents.UpdateEmail(
@@ -93,5 +96,5 @@ fun RegisterScreen(
 @Preview
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen()
+    RegisterScreen(onNavigateToHomeScreen = {})
 }
