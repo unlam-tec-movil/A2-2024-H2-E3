@@ -23,6 +23,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.RegisterScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,23 +51,34 @@ fun MainScreen() {
     // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
     // para navegar como naviegate y también la información de en dónde se "encuentra" el usuario
     // a través del back stack
-    val controller = rememberNavController()
+    val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
-        bottomBar = { BottomBar(controller = controller) },
+        //TODO:: -BottomBar- *1* / Priority: Medium
+        // Description: Eliminar bottomBar de la pantalla de login y registro.
+        bottomBar = { BottomBar(controller = navController) },
         floatingActionButton = {
-            IconButton(onClick = { controller.navigate("home") }) {
-                Icon(Icons.Filled.Home, contentDescription = "Home")
+            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
+                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
             }
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
-        NavHost(navController = controller, startDestination = "home") {
+        NavHost(
+            navController = navController, startDestination = NavigationRoutes.RegisterScreen.route
+        ) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
-            composable("home") {
+            composable(NavigationRoutes.RegisterScreen.route) {
+                RegisterScreen(
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
+            composable(NavigationRoutes.HomeScreen.route) {
                 // Home es el componente en sí que es el destino de navegación.
                 HomeScreen(modifier = Modifier.padding(paddingValue)) {
                     LaunchedEffect(snackbarHostState) {
@@ -76,3 +89,4 @@ fun MainScreen() {
         }
     }
 }
+
