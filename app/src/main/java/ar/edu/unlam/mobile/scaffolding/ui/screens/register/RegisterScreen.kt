@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun RegisterScreen(
     onNavigateToHomeScreen: () -> Unit,
-    modifier: Modifier = Modifier, viewModel: RegisterViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val registerState by remember { viewModel.registerState }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -50,7 +51,7 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Registro",
+                text = "Registrarse",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
@@ -91,10 +92,4 @@ fun RegisterScreen(
 
         }
     }
-}
-
-@Preview
-@Composable
-fun RegisterScreenPreview() {
-    RegisterScreen(onNavigateToHomeScreen = {})
 }

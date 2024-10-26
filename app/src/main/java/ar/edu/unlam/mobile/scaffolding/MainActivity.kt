@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.RegisterScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,7 +72,17 @@ fun MainScreen() {
         ) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
+            composable(NavigationRoutes.LoginScreen.route) {
+                // LoginScreen, formulario de inicio de sesion
+                LoginScreen(
+                    onNavigateToRegisterScreen = { navController.navigate(NavigationRoutes.RegisterScreen.route) },
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
             composable(NavigationRoutes.RegisterScreen.route) {
+                // RegisterScreen, formulario de registro
                 RegisterScreen(
                     onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
                     modifier = Modifier.padding(paddingValue)
@@ -79,7 +90,7 @@ fun MainScreen() {
             }
 
             composable(NavigationRoutes.HomeScreen.route) {
-                // Home es el componente en sí que es el destino de navegación.
+                // HomeScreen, lista de tuits
                 HomeScreen(modifier = Modifier.padding(paddingValue)) {
                     LaunchedEffect(snackbarHostState) {
                         snackbarHostState.showSnackbar(message = it, actionLabel = "Retry message")
