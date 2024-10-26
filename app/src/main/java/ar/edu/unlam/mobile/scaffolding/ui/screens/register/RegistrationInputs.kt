@@ -24,10 +24,9 @@ fun RegistrationInputs(
     onConfirmPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
 ) {
-    // Login Inputs Section
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        // Email ID
+        // Email
         EmailTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -35,8 +34,8 @@ fun RegistrationInputs(
             value = registrationState.emailTextField,
             onValueChange = onEmailChange,
             label = stringResource(id = R.string.email_label),
-//            isError = registrationState.errorState.emailErrorState.hasError,
-//            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
+            isError = (registrationState.errorState.emailErrorState.hasError),
+            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
         )
         // Username
         UsernameTextField(
@@ -45,7 +44,9 @@ fun RegistrationInputs(
                 .padding(top = 5.dp),
             value = registrationState.usernameTextField,
             onValueChange = onUsernameChange,
-            label = stringResource(id = R.string.username_label)
+            label = stringResource(id = R.string.username_label),
+            isError = (registrationState.errorState.usernameErrorState.hasError),
+            errorText = stringResource(id = registrationState.errorState.usernameErrorState.errorMessageStringResource)
         )
         // Password
         PasswordTextField(
@@ -54,15 +55,20 @@ fun RegistrationInputs(
                 .padding(top = 5.dp),
             value = registrationState.passwordTextField,
             onValueChange = onPasswordChange,
-            label = stringResource(id = R.string.password_label)
+            label = stringResource(id = R.string.password_label),
+            isError = (registrationState.errorState.passwordErrorState.hasError),
+            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
         )
+        // Confirm password
         ConfirmPasswordTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 5.dp),
             value = registrationState.confirmPasswordTextField,
             onValueChange = onConfirmPasswordChange,
-            label = stringResource(id = R.string.confirm_password_label)
+            label = stringResource(id = R.string.confirm_password_label),
+            isError = (registrationState.errorState.confirmPasswordErrorState.hasError),
+            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
         )
 
         NormalButton(

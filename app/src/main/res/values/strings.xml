@@ -5,4 +5,10 @@
     <string name="username_label">Nombre de usuario</string>
     <string name="password_label">Contraseña</string>
     <string name="confirm_password_label">Confirmar contraseña</string>
+    <string name="empty_string" />
+    <string name="registration_error_msg_password_mismatch">La contraseña de verificación no coincide</string>
+    <string name="registration_error_msg_empty_email">Por favor ingrese su email</string>
+    <string name="registration_error_msg_empty_password">Por favor ingrese su contraseña</string>
+    <string name="registration_error_msg_empty_confirm_password">Por favor confirme su contraseña</string>
+    <string name="registration_error_msg_empty_username">Por favor ingrese su nombre de usuario</string>
 </resources>
