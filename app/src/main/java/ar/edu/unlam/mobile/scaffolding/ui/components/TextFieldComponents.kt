@@ -18,15 +18,18 @@ fun EmailTextField(
     errorText: String = "",
 ) {
 
-    OutlinedTextField(
-        modifier = modifier,
+    OutlinedTextField(modifier = modifier,
         value = value,
         onValueChange = onValueChange,
-        label = {Text(text = label)},
+        label = { Text(text = label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        isError = isError
-    )
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        })
 }
 
 @Composable
@@ -36,6 +39,7 @@ fun UsernameTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
+    errorText: String = "",
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -44,7 +48,12 @@ fun UsernameTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        isError = isError
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        }
     )
 }
 
@@ -55,7 +64,8 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-){
+    errorText: String = "",
+) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
@@ -63,7 +73,12 @@ fun PasswordTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        isError = isError
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        }
     )
 }
 
@@ -74,7 +89,8 @@ fun ConfirmPasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-){
+    errorText: String = "",
+) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
@@ -82,7 +98,12 @@ fun ConfirmPasswordTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        isError = isError
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        }
     )
 }
 

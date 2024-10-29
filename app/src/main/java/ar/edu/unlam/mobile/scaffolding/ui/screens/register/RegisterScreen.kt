@@ -25,8 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun RegisterScreen(
     onNavigateToHomeScreen: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel()
+    modifier: Modifier = Modifier, viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val registerState by remember { viewModel.registerState }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -40,56 +39,55 @@ fun RegisterScreen(
         }
     }
 
-    Scaffold(modifier = modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Registrarse",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 32.dp)
-            )
-            RegistrationInputs(
-                registrationState = registerState,
-                onEmailChange = { inputString ->
-                    viewModel.onRegistrationEvent(
-                        event = RegisterEvents.UpdateEmail(
-                            email = inputString
+        Scaffold(modifier = modifier.fillMaxSize(),
+            snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Registro",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(bottom = 32.dp)
+                )
+                RegistrationInputs(registrationState = registerState,
+                    onEmailChange = { inputString ->
+                        viewModel.onRegistrationEvent(
+                            event = RegistrationUiEvent.UpdateEmail(
+                                email = inputString
+                            )
                         )
-                    )
-                },
-                onUsernameChange = { inputString ->
-                    viewModel.onRegistrationEvent(
-                        event = RegisterEvents.UpdateUsername(
-                            username = inputString
+                    },
+                    onUsernameChange = { inputString ->
+                        viewModel.onRegistrationEvent(
+                            event = RegistrationUiEvent.UpdateUsername(
+                                username = inputString
+                            )
                         )
-                    )
-                },
-                onPasswordChange = { inputString ->
-                    viewModel.onRegistrationEvent(
-                        event = RegisterEvents.UpdatePassword(
-                            password = inputString
+                    },
+                    onPasswordChange = { inputString ->
+                        viewModel.onRegistrationEvent(
+                            event = RegistrationUiEvent.UpdatePassword(
+                                password = inputString
+                            )
                         )
-                    )
-                },
-                onConfirmPasswordChange = { inputString ->
-                    viewModel.onRegistrationEvent(
-                        event = RegisterEvents.UpdateConfirmPassword(
-                            password = inputString
+                    },
+                    onConfirmPasswordChange = { inputString ->
+                        viewModel.onRegistrationEvent(
+                            event = RegistrationUiEvent.UpdateConfirmPassword(
+                                password = inputString
+                            )
                         )
-                    )
-                },
-                onSubmit = {
-                    viewModel.onRegistrationEvent(event = RegisterEvents.RegisterUser)
-                }
-            )
+                    },
+                    onSubmit = {
+                        viewModel.onRegistrationEvent(event = RegistrationUiEvent.Submit)
+                    })
 
+            }
         }
     }
 }

@@ -4,15 +4,16 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens.register
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegisterEvents
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.UserEvents
+import ar.edu.unlam.mobile.scaffolding.ui.common.ErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegistrationUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegisterState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.confirmPasswordEmptyErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.emailEmptyErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.passwordEmptyErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.passwordMismatchErrorState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.usernameEmptyErrorState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,79 +22,136 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     private val _registerState = mutableStateOf(RegisterState())
     val registerState: State<RegisterState> = _registerState
 
-    private val _userEventsState = MutableSharedFlow<UserEvents>()
-    val userEventsState: SharedFlow<UserEvents> = _userEventsState.asSharedFlow()
-
-    fun onRegistrationEvent(event: RegisterEvents) {
+    fun onRegistrationEvent(event: RegistrationUiEvent) {
         when (event) {
-            is RegisterEvents.UpdateEmail -> {
+            is RegistrationUiEvent.UpdateEmail -> {
                 _registerState.value = registerState.value.copy(
-                    emailTextField = event.email
+                    emailTextField = event.email,
+                    errorState = registerState.value.errorState.copy(
+                        emailErrorState = if (registerState.value.emailTextField.trim().isEmpty()) {
+                            // el campo esta vacio
+                            emailEmptyErrorState
+                        } else {
+                            // no hay error
+                            ErrorState()
+                        }
+
+                    )
                 )
             }
 
-            is RegisterEvents.UpdateUsername -> {
+            is RegistrationUiEvent.UpdateUsername -> {
                 _registerState.value = registerState.value.copy(
-                    usernameTextField = event.username
+                    usernameTextField = event.username,
+                    errorState = registerState.value.errorState.copy(
+                        emailErrorState = if (registerState.value.usernameTextField.trim().isEmpty()) {
+                            usernameEmptyErrorState
+                        } else {
+                            ErrorState()
+                        }
+
+                    )
                 )
             }
 
-            is RegisterEvents.UpdatePassword -> {
+            is RegistrationUiEvent.UpdatePassword -> {
                 _registerState.value = registerState.value.copy(
-                    passwordTextField = event.password
+                    passwordTextField = event.password,
+                    errorState = registerState.value.errorState.copy(
+                        emailErrorState = if (registerState.value.passwordTextField.trim().isEmpty()) {
+                            passwordEmptyErrorState
+                        } else {
+                            ErrorState()
+                        }
+
+                    )
                 )
             }
 
-            is RegisterEvents.UpdateConfirmPassword -> {
+            is RegistrationUiEvent.UpdateConfirmPassword -> {
                 _registerState.value = registerState.value.copy(
-                    confirmPasswordTextField = event.password
+                    confirmPasswordTextField = event.password,
+                    errorState = registerState.value.errorState.copy(
+                        emailErrorState = if (registerState.value.confirmPasswordTextField.trim().isEmpty()) {
+                            confirmPasswordEmptyErrorState
+                        } else {
+                            ErrorState()
+                        }
+
+                    )
                 )
             }
 
-            RegisterEvents.RegisterUser -> {
-                val state = _registerState.value
-                val areFieldsValid = validateFields(
-                    state.emailTextField,
-                    state.usernameTextField,
-                    state.passwordTextField,
-                    state.confirmPasswordTextField
-                )
-                val isPasswordValid =
-                    validatePassword(state.passwordTextField, state.confirmPasswordTextField)
-
-                if (!areFieldsValid) {
-                    emitUserEvent(UserEvents.ShowError("Por favor complete los campos vacíos"))
-                } else if (!isPasswordValid) {
-                    emitUserEvent(UserEvents.ShowError("La contraseña de verificación no coincide"))
-                } else {
-                    registerUser()
+            is RegistrationUiEvent.Submit -> {
+                val inputsValidated = validateFields()
+                if (inputsValidated) {
+                    _registerState.value =
+                        registerState.value.copy(isRegistrationSuccessful = true)
                 }
             }
         }
     }
 
-    private fun validateFields(
-        email: String, user: String, password: String, confirmPassword: String
-    ): Boolean {
-        // ToDo:: -Register- *2* / Priority: Medium
-        // Description: La validacion de estos campos preferiblemente deberia hacerse en la capa Domain (usecase)
-        return !(email.isBlank() || user.isBlank() || password.isBlank() || confirmPassword.isBlank())
-    }
+    private fun validateFields(): Boolean {
+        val emailString = registerState.value.emailTextField.trim()
+        val usernameString = registerState.value.usernameTextField.trim()
+        val passwordString = registerState.value.passwordTextField.trim()
+        val confirmPasswordString = registerState.value.confirmPasswordTextField.trim()
 
-    private fun validatePassword(password: String, confirmPassword: String): Boolean {
-        return password == confirmPassword
-    }
+        return when {
 
-    private fun registerUser() {
-        // ToDo:: -Register- *1* / Priority: High
-        // Description: Create user and navigate to HomeScreen
-        emitUserEvent(UserEvents.NavigateToHome)
-    }
+            emailString.isEmpty() -> {
+                _registerState.value = registerState.value.copy(
+                    errorState = RegistrationErrorState(
+                        emailErrorState = emailEmptyErrorState
+                    )
+                )
+                false
+            }
 
-    private fun emitUserEvent(event: UserEvents) = viewModelScope.launch {
-        when (event) {
-            is UserEvents.NavigateToHome -> _userEventsState.emit(UserEvents.NavigateToHome)
-            is UserEvents.ShowError -> _userEventsState.emit(UserEvents.ShowError(event.message))
+            usernameString.isEmpty() -> {
+                _registerState.value = registerState.value.copy(
+                    errorState = RegistrationErrorState(
+                        usernameErrorState = usernameEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            passwordString.isEmpty() -> {
+                _registerState.value = registerState.value.copy(
+                    errorState = RegistrationErrorState(
+                        passwordErrorState = passwordEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            confirmPasswordString.isEmpty() -> {
+                _registerState.value = registerState.value.copy(
+                    errorState = RegistrationErrorState(
+                        confirmPasswordErrorState = confirmPasswordEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            passwordString != confirmPasswordString -> {
+                _registerState.value = registerState.value.copy(
+                    errorState = RegistrationErrorState(
+                        confirmPasswordErrorState = passwordMismatchErrorState
+                    )
+                )
+                false
+            }
+
+            // sin errores
+            else -> {
+                // default error state
+                _registerState.value =
+                    registerState.value.copy(errorState = RegistrationErrorState())
+                true
+            }
         }
-    }
+}
 }
