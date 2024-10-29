@@ -10,35 +10,26 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegisterEvents
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.UserEvents
-import kotlinx.coroutines.flow.collectLatest
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegistrationUiEvent
 
 @Composable
 fun RegisterScreen(
     onNavigateToHomeScreen: () -> Unit,
-    modifier: Modifier = Modifier, viewModel: RegisterViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val registerState by remember { viewModel.registerState }
     val snackBarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        viewModel.userEventsState.collectLatest { event ->
-            when(event){
-                is UserEvents.NavigateToHome -> onNavigateToHomeScreen()
-                is UserEvents.ShowError -> snackBarHostState.showSnackbar(event.message)
-            }
-        }
-    }
-
+    if (registerState.isRegistrationSuccessful) {
+        onNavigateToHomeScreen()
+    } else {
         Scaffold(modifier = modifier.fillMaxSize(),
             snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
             Column(
