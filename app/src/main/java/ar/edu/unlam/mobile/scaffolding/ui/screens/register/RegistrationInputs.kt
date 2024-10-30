@@ -13,11 +13,11 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.EmailTextField
 import ar.edu.unlam.mobile.scaffolding.ui.components.NormalButton
 import ar.edu.unlam.mobile.scaffolding.ui.components.PasswordTextField
 import ar.edu.unlam.mobile.scaffolding.ui.components.UsernameTextField
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegisterState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationState
 
 @Composable
 fun RegistrationInputs(
-    registrationState: RegisterState,
+    registrationState: RegistrationState,
     onEmailChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -34,8 +34,8 @@ fun RegistrationInputs(
             value = registrationState.emailTextField,
             onValueChange = onEmailChange,
             label = stringResource(id = R.string.email_label),
-            isError = (registrationState.errorState.emailErrorState.hasError),
-            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
+            isError = registrationState.errorState.emailErrorState,
+//            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
         )
         // Username
         UsernameTextField(
@@ -45,8 +45,8 @@ fun RegistrationInputs(
             value = registrationState.usernameTextField,
             onValueChange = onUsernameChange,
             label = stringResource(id = R.string.username_label),
-            isError = (registrationState.errorState.usernameErrorState.hasError),
-            errorText = stringResource(id = registrationState.errorState.usernameErrorState.errorMessageStringResource)
+            isError = (registrationState.errorState.usernameErrorState),
+//            errorText = stringResource(id = registrationState.errorState.usernameErrorState.errorMessageStringResource)
         )
         // Password
         PasswordTextField(
@@ -56,8 +56,8 @@ fun RegistrationInputs(
             value = registrationState.passwordTextField,
             onValueChange = onPasswordChange,
             label = stringResource(id = R.string.password_label),
-            isError = (registrationState.errorState.passwordErrorState.hasError),
-            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
+            isError = (registrationState.errorState.passwordErrorState),
+//            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
         )
         // Confirm password
         ConfirmPasswordTextField(
@@ -67,8 +67,8 @@ fun RegistrationInputs(
             value = registrationState.confirmPasswordTextField,
             onValueChange = onConfirmPasswordChange,
             label = stringResource(id = R.string.confirm_password_label),
-            isError = (registrationState.errorState.confirmPasswordErrorState.hasError),
-            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
+            isError = (registrationState.errorState.confirmPasswordErrorState),
+//            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
         )
 
         NormalButton(

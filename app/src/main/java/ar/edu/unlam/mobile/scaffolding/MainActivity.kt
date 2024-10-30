@@ -5,10 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -58,11 +54,11 @@ fun MainScreen() {
         //TODO:: -BottomBar- *1* / Priority: Medium
         // Description: Eliminar bottomBar de la pantalla de login y registro.
         bottomBar = { BottomBar(controller = navController) },
-        floatingActionButton = {
-            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
-                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
-            }
-        },
+//        floatingActionButton = {
+//            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
+//                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
+//            }
+//        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
