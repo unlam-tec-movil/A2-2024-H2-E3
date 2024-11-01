@@ -64,7 +64,7 @@ fun MainScreen() {
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
         NavHost(
-            navController = navController, startDestination = NavigationRoutes.RegisterScreen.route
+            navController = navController, startDestination = NavigationRoutes.LoginScreen.route
         ) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.

@@ -1,13 +1,12 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.register
 
 
-import androidx.collection.emptyLongSet
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegistrationUiEvent
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.UserUiEvent
+import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationState
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationErrorState
 import dagger.hilt.android.lifecycle.HiltViewModel

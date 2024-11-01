@@ -11,4 +11,5 @@
     <string name="registration_error_msg_empty_password">Por favor ingrese su contraseña</string>
     <string name="registration_error_msg_empty_confirm_password">Por favor confirme su contraseña</string>
     <string name="registration_error_msg_empty_username">Por favor ingrese su nombre de usuario</string>
+    <string name="login_button_text">Ingresar</string>
 </resources>

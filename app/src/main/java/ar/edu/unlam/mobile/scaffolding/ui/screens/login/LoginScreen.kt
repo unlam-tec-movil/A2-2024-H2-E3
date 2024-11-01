@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ar.edu.unlam.mobile.scaffolding.ui.screens.login.event.LoginUiEvent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -26,7 +27,7 @@ fun LoginScreen(
     modifier: Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-//    val loginState by remember { viewModel.loginState }
+    val loginState by remember { viewModel.loginState }
     val snackBarHostState = remember { SnackbarHostState() }
 //
 //    LaunchedEffect(Unit) {
@@ -54,26 +55,26 @@ fun LoginScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
-//            LoginInputs(
-//                loginState = loginState,
-//                onEmailChange = { inputString ->
-//                    viewModel.onLoginEvent(
-//                        event = LoginEvents.UpdateEmail(
-//                            email = inputString
-//                        )
-//                    )
-//                },
-//                onPasswordChange = { inputString ->
-//                    viewModel.onLoginEvent(
-//                        event = LoginEvents.UpdatePassword(
-//                            password = inputString
-//                        )
-//                    )
-//                },
-//                onSubmit = {
-//                    viewModel.onLoginEvent(event = LoginEvents.LogUser)
-//                }
-//            )
+            LoginInputs(
+                loginState = loginState,
+                onEmailChange = { inputString ->
+                    viewModel.onLoginEvent(
+                        event = LoginUiEvent.UpdateEmail(
+                            email = inputString
+                        )
+                    )
+                },
+                onPasswordChange = { inputString ->
+                    viewModel.onLoginEvent(
+                        event = LoginUiEvent.UpdatePassword(
+                            password = inputString
+                        )
+                    )
+                },
+                onSubmit = {
+                    viewModel.onLoginEvent(event = LoginUiEvent.Submit)
+                }
+            )
 
         }
     }
