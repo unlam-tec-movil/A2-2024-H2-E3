@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+//TODO ADD USER REPOSITORY
 @HiltViewModel
 class RegisterViewModel @Inject constructor() : ViewModel() {
 
