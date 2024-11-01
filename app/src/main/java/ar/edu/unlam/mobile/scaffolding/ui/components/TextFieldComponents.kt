@@ -15,7 +15,6 @@ fun EmailTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-    errorText: String = "",
 ) {
 
     OutlinedTextField(modifier = modifier,
@@ -25,11 +24,7 @@ fun EmailTextField(
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        })
+        )
 }
 
 @Composable
@@ -39,7 +34,6 @@ fun UsernameTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-    errorText: String = "",
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -49,11 +43,6 @@ fun UsernameTextField(
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        }
     )
 }
 
@@ -64,7 +53,6 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-    errorText: String = "",
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -74,11 +62,6 @@ fun PasswordTextField(
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        }
     )
 }
 
@@ -89,7 +72,6 @@ fun ConfirmPasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-    errorText: String = "",
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -99,22 +81,5 @@ fun ConfirmPasswordTextField(
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        }
-    )
-}
-
-@Composable
-fun ErrorTextInputField(
-    modifier: Modifier = Modifier, text: String
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.error
     )
 }

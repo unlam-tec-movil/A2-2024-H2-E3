@@ -11,15 +11,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
-    private val _loginState = mutableStateOf(LoginState())
+    private var _loginState = mutableStateOf(LoginState())
     val loginState: State<LoginState> = _loginState
 
     fun onLoginEvent(event: LoginUiEvent) {
-        when(event){
+        when (event) {
             is LoginUiEvent.UpdateEmail -> {
                 _loginState.value = loginState.value.copy(
-                    emailTextField = event.email,
-                    errorState = loginState.value.errorState.copy(
+                    emailTextField = event.email, errorState = loginState.value.errorState.copy(
                         emailErrorState = loginState.value.emailTextField.trim().isEmpty()
                     )
                 )
@@ -31,7 +30,11 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                     errorState = loginState.value.errorState.copy(
                         passwordErrorState = loginState.value.passwordTextField.trim().isEmpty()
                     )
-                    )
+                )
+            }
+
+            is LoginUiEvent.RegisterTextClicked -> {
+//                emitUserEvent(event = UserUiEvent.NavigateToRegisterScreen)
             }
 
             is LoginUiEvent.Submit -> {
