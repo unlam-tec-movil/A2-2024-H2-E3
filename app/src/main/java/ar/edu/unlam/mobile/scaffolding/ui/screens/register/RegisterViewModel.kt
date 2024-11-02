@@ -136,6 +136,8 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         when (event) {
             is UserUiEvent.NavigateToHomeScreen -> _userUiState.emit(UserUiEvent.NavigateToHomeScreen)
             is UserUiEvent.ShowError -> _userUiState.emit(UserUiEvent.ShowError(event.message))
+            is UserUiEvent.NavigateToLoginScreen -> _userUiState.emit(UserUiEvent.NavigateToLoginScreen)
+            else -> Unit
         }
     }
 }

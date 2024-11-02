@@ -35,6 +35,7 @@ fun RegisterScreen(
             when (event) {
                 is UserUiEvent.NavigateToHomeScreen -> onNavigateToHomeScreen()
                 is UserUiEvent.ShowError -> snackBarHostState.showSnackbar(event.message)
+                else -> Unit
             }
         }
     }

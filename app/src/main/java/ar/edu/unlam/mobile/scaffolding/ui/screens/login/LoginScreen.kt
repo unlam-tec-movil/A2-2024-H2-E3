@@ -1,6 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.login
 
-import android.content.res.Resources.Theme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,20 +9,21 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ar.edu.unlam.mobile.scaffolding.R
+import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.event.LoginUiEvent
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
@@ -34,16 +34,17 @@ fun LoginScreen(
 ) {
     val loginState by remember { viewModel.loginState }
     val snackBarHostState = remember { SnackbarHostState() }
-//
-//    LaunchedEffect(Unit) {
-//        viewModel.userEventsState.collectLatest { event ->
-//            when(event){
-//                is UserEvents.NavigateToRegister -> onNavigateToHomeScreen()
-//                is UserEvents.NavigateToHome -> onNavigateToHomeScreen()
-//                is UserEvents.ShowError -> snackBarHostState.showSnackbar(event.message)
-//            }
-//        }
-//    }
+
+    LaunchedEffect(Unit) {
+        viewModel.UserUiState.collectLatest { event ->
+            when(event){
+                is UserUiEvent.NavigateToRegisterScreen -> onNavigateToRegisterScreen()
+                is UserUiEvent.NavigateToHomeScreen -> onNavigateToHomeScreen()
+                is UserUiEvent.ShowError -> snackBarHostState.showSnackbar(event.message)
+                else -> Unit
+            }
+        }
+    }
 
     Scaffold(modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
