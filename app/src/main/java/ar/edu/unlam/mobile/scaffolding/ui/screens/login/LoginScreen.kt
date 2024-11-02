@@ -1,10 +1,9 @@
-package ar.edu.unlam.mobile.scaffolding.ui.screens.register
+package ar.edu.unlam.mobile.scaffolding.ui.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -15,24 +14,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegistrationUiEvent
+import ar.edu.unlam.mobile.scaffolding.R
 import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
+import ar.edu.unlam.mobile.scaffolding.ui.screens.login.event.LoginUiEvent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun RegisterScreen(
+fun LoginScreen(
+    onNavigateToRegisterScreen: () -> Unit,
     onNavigateToHomeScreen: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel = hiltViewModel()
+    modifier: Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val registerState by remember { viewModel.registrationState }
+    val loginState by remember { viewModel.loginState }
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.UserUiState.collectLatest { event ->
-            when (event) {
+            when(event){
+                is UserUiEvent.NavigateToRegisterScreen -> onNavigateToRegisterScreen()
                 is UserUiEvent.NavigateToHomeScreen -> onNavigateToHomeScreen()
                 is UserUiEvent.ShowError -> snackBarHostState.showSnackbar(event.message)
                 else -> Unit
@@ -51,42 +57,37 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Registro",
-                style = MaterialTheme.typography.headlineMedium,
+                text = stringResource(id = R.string.welcome_text),
+                style = TextStyle(
+                    fontSize = 40.sp,
+                    color = Color.Blue,
+                    letterSpacing = 2.sp,
+                ),
                 modifier = Modifier.padding(bottom = 32.dp)
             )
-            RegistrationInputs(registrationState = registerState,
+            LoginInputs(
+                loginState = loginState,
                 onEmailChange = { inputString ->
-                    viewModel.onRegistrationUiEvent(
-                        event = RegistrationUiEvent.UpdateEmail(
+                    viewModel.onLoginEvent(
+                        event = LoginUiEvent.UpdateEmail(
                             email = inputString
                         )
                     )
                 },
-                onUsernameChange = { inputString ->
-                    viewModel.onRegistrationUiEvent(
-                        event = RegistrationUiEvent.UpdateUsername(
-                            username = inputString
-                        )
-                    )
-                },
                 onPasswordChange = { inputString ->
-                    viewModel.onRegistrationUiEvent(
-                        event = RegistrationUiEvent.UpdatePassword(
+                    viewModel.onLoginEvent(
+                        event = LoginUiEvent.UpdatePassword(
                             password = inputString
                         )
                     )
                 },
-                onConfirmPasswordChange = { inputString ->
-                    viewModel.onRegistrationUiEvent(
-                        event = RegistrationUiEvent.UpdateConfirmPassword(
-                            password = inputString
-                        )
-                    )
+                onRegisterTextClicked = {
+                    viewModel.onLoginEvent(event = LoginUiEvent.RegisterTextClicked)
                 },
                 onSubmit = {
-                    viewModel.onRegistrationUiEvent(event = RegistrationUiEvent.Submit)
-                })
+                    viewModel.onLoginEvent(event = LoginUiEvent.Submit)
+                }
+            )
 
         }
     }

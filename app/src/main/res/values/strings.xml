@@ -5,4 +5,8 @@
     <string name="username_label">Nombre de usuario</string>
     <string name="password_label">Contraseña</string>
     <string name="confirm_password_label">Confirmar contraseña</string>
+    <string name="empty_string" />
+    <string name="login_button_text">Ingresar</string>
+    <string name="register_button_text">¿Aún no tienes una cuenta?</string>
+    <string name="welcome_text">¡Bienvenido!</string>
 </resources>

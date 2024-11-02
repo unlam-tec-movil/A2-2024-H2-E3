@@ -5,10 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -24,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.RegisterScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,21 +54,31 @@ fun MainScreen() {
         //TODO:: -BottomBar- *1* / Priority: Medium
         // Description: Eliminar bottomBar de la pantalla de login y registro.
         bottomBar = { BottomBar(controller = navController) },
-        floatingActionButton = {
-            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
-                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
-            }
-        },
+//        floatingActionButton = {
+//            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
+//                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
+//            }
+//        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
         NavHost(
-            navController = navController, startDestination = NavigationRoutes.RegisterScreen.route
+            navController = navController, startDestination = NavigationRoutes.LoginScreen.route
         ) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
+            composable(NavigationRoutes.LoginScreen.route) {
+                // LoginScreen, formulario de inicio de sesion
+                LoginScreen(
+                    onNavigateToRegisterScreen = { navController.navigate(NavigationRoutes.RegisterScreen.route) },
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
             composable(NavigationRoutes.RegisterScreen.route) {
+                // RegisterScreen, formulario de registro
                 RegisterScreen(
                     onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
                     modifier = Modifier.padding(paddingValue)
@@ -79,7 +86,7 @@ fun MainScreen() {
             }
 
             composable(NavigationRoutes.HomeScreen.route) {
-                // Home es el componente en sí que es el destino de navegación.
+                // HomeScreen, lista de tuits
                 HomeScreen(modifier = Modifier.padding(paddingValue)) {
                     LaunchedEffect(snackbarHostState) {
                         snackbarHostState.showSnackbar(message = it, actionLabel = "Retry message")

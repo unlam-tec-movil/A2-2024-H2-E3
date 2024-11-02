@@ -13,21 +13,20 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.EmailTextField
 import ar.edu.unlam.mobile.scaffolding.ui.components.NormalButton
 import ar.edu.unlam.mobile.scaffolding.ui.components.PasswordTextField
 import ar.edu.unlam.mobile.scaffolding.ui.components.UsernameTextField
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegisterState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationState
 
 @Composable
 fun RegistrationInputs(
-    registrationState: RegisterState,
+    registrationState: RegistrationState,
     onEmailChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
 ) {
-    // Login Inputs Section
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        // Email ID
+        // Email
         EmailTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -35,7 +34,7 @@ fun RegistrationInputs(
             value = registrationState.emailTextField,
             onValueChange = onEmailChange,
             label = stringResource(id = R.string.email_label),
-//            isError = registrationState.errorState.emailErrorState.hasError,
+            isError = registrationState.errorState.emailErrorState,
 //            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
         )
         // Username
@@ -45,7 +44,9 @@ fun RegistrationInputs(
                 .padding(top = 5.dp),
             value = registrationState.usernameTextField,
             onValueChange = onUsernameChange,
-            label = stringResource(id = R.string.username_label)
+            label = stringResource(id = R.string.username_label),
+            isError = (registrationState.errorState.usernameErrorState),
+//            errorText = stringResource(id = registrationState.errorState.usernameErrorState.errorMessageStringResource)
         )
         // Password
         PasswordTextField(
@@ -54,15 +55,20 @@ fun RegistrationInputs(
                 .padding(top = 5.dp),
             value = registrationState.passwordTextField,
             onValueChange = onPasswordChange,
-            label = stringResource(id = R.string.password_label)
+            label = stringResource(id = R.string.password_label),
+            isError = (registrationState.errorState.passwordErrorState),
+//            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
         )
+        // Confirm password
         ConfirmPasswordTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 5.dp),
             value = registrationState.confirmPasswordTextField,
             onValueChange = onConfirmPasswordChange,
-            label = stringResource(id = R.string.confirm_password_label)
+            label = stringResource(id = R.string.confirm_password_label),
+            isError = (registrationState.errorState.confirmPasswordErrorState),
+//            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
         )
 
         NormalButton(

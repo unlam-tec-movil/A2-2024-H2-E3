@@ -15,18 +15,16 @@ fun EmailTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-    errorText: String = "",
 ) {
 
-    OutlinedTextField(
-        modifier = modifier,
+    OutlinedTextField(modifier = modifier,
         value = value,
         onValueChange = onValueChange,
-        label = {Text(text = label)},
+        label = { Text(text = label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        isError = isError
-    )
+        isError = isError,
+        )
 }
 
 @Composable
@@ -44,7 +42,7 @@ fun UsernameTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        isError = isError
+        isError = isError,
     )
 }
 
@@ -55,7 +53,7 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-){
+) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
@@ -63,7 +61,7 @@ fun PasswordTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        isError = isError
+        isError = isError,
     )
 }
 
@@ -74,7 +72,7 @@ fun ConfirmPasswordTextField(
     onValueChange: (String) -> Unit,
     label: String,
     isError: Boolean = false,
-){
+) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
@@ -82,18 +80,6 @@ fun ConfirmPasswordTextField(
         label = { Text(label) },
         maxLines = 1,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        isError = isError
-    )
-}
-
-@Composable
-fun ErrorTextInputField(
-    modifier: Modifier = Modifier, text: String
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.error
+        isError = isError,
     )
 }
