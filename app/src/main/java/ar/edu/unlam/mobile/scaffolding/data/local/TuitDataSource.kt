@@ -1,15 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.data.local
 
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-
-class TuitDataSource
-    @Inject
-    constructor() : TuitRepository {
+class TuitDataSource {
+        /*
         private val tuits = mutableListOf<Tuit>()
 
         init {
@@ -29,7 +21,7 @@ class TuitDataSource
             tuits.addAll(newTuits)
         }
 
-        override fun getTuits(): Flow<List<Tuit>> =
+        override suspend fun getTuits(): Flow<List<Tuit>> =
             flow {
                 delay(500L)
                 if (tuits.isEmpty()) {
@@ -38,7 +30,5 @@ class TuitDataSource
                 emit(tuits)
             }
 
-        override fun createTuit(tuit: Tuit) {
-            tuits.add(tuit)
-        }
-    }
+         */
+}

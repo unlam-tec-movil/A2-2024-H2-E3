@@ -8,5 +8,6 @@ data class Tuit(
     var likes: Int,
     val liked: Boolean,
     var replies: Int,
+    val date: String,
     val reply: (id: Int) -> Unit,
 )

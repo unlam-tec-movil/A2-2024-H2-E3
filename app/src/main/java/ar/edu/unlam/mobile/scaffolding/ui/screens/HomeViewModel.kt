@@ -8,6 +8,7 @@ import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -40,16 +41,20 @@ class HomeViewModel
         // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
         // (https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
         // _helloMessage State es el estado del componente "HelloMessage" inicializado como "Cargando"
-        private val helloMessageState = MutableStateFlow(FeedUIState.Loading)
+        // private val helloMessageState = MutableStateFlow(FeedUIState.Loading)
 
         // _Ui State es el estado general del view model.
-        private val _uiState = MutableStateFlow(TuitUIState(helloMessageState.value))
+        // private val _uiState = MutableStateFlow(TuitUIState(helloMessageState.value))
+
+        private val _uiState = MutableStateFlow(TuitUIState(FeedUIState.Loading))
+        val uiState: StateFlow<TuitUIState> = _uiState.asStateFlow()
 
         // UIState expone el estado anterior como un Flujo de Estado de solo lectura.
         // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
-        val uiState = _uiState.asStateFlow()
+        // val uiState = _uiState.asStateFlow()
 
         init {
+
             viewModelScope.launch {
                 tuitRepository
                     .getTuits()

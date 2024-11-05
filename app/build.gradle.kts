@@ -65,6 +65,8 @@ dependencies {
 
     implementation(libs.io.coil.kt)
 
+    implementation(libs.retrofit)
+    implementation(libs.gsonConverter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
