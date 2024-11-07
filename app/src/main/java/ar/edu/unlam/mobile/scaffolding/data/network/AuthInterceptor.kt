@@ -16,6 +16,7 @@ class AuthInterceptor(
                     tokenManager.userToken?.let { addHeader("Authorization", "Bearer $it") }
                     tokenManager.appToken?.let { addHeader("Application-Token", it) }
                 }.build()
+        //TODO eliminar Log
         Log.d("AuthInterceptor", "userToken: ${tokenManager.userToken}, appToken: ${tokenManager.appToken}")
         return chain.proceed(request)
     }

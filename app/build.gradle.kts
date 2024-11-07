@@ -65,6 +65,7 @@ dependencies {
 
     implementation(libs.io.coil.kt)
 
+    //retrofit
     implementation(libs.retrofit)
     implementation(libs.gsonConverter)
 
