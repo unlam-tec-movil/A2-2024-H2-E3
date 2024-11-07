@@ -11,7 +11,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("api/v1/me/feed")
-    suspend fun getFeed(): Response<List<Tuit>>
+    suspend fun getFeed(): List<Tuit>
 
     @GET("/api/v1/me/profile")
     suspend fun getProfile(): User

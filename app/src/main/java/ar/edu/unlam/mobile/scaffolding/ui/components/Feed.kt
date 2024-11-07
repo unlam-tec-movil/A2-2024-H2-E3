@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
@@ -18,9 +19,13 @@ fun Feed(
 ) {
     LazyColumn(
         modifier =
-            modifier
-                .fillMaxSize()
-                .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
+        modifier
+            .fillMaxSize()
+            .padding(
+                bottom = WindowInsets.navigationBars
+                    .asPaddingValues()
+                    .calculateBottomPadding()
+            ),
     ) {
         items(tuits) { tuit ->
             TuitCard(tuit = tuit)

@@ -1,8 +1,12 @@
-package ar.edu.unlam.mobile.scaffolding.data.network
+package ar.edu.unlam.mobile.scaffolding.data.di
 
 import android.content.Context
+import ar.edu.unlam.mobile.scaffolding.data.network.ApiService
+import ar.edu.unlam.mobile.scaffolding.data.network.AuthInterceptor
+import ar.edu.unlam.mobile.scaffolding.data.network.RetrofitService
+import ar.edu.unlam.mobile.scaffolding.data.network.TokenManager
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepositoryImpl
+import ar.edu.unlam.mobile.scaffolding.data.repository.TuitRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

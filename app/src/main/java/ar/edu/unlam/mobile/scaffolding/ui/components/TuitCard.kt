@@ -75,6 +75,8 @@ fun TuitReply(tuit: Tuit) {
     }
 }
 
+
+
 @Composable
 fun TuitImage(tuit: Tuit) {
     if (tuit.avatar.isNullOrEmpty()) {

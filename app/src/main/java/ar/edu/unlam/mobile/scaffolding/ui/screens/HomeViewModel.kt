@@ -53,8 +53,8 @@ class HomeViewModel
         // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
         // val uiState = _uiState.asStateFlow()
 
-        init {
 
+        init {
             viewModelScope.launch {
                 tuitRepository
                     .getTuits()
