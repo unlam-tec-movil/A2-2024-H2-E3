@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/*
 @Composable
 fun MainScreen() {
     // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
@@ -92,6 +93,50 @@ fun MainScreen() {
                         snackbarHostState.showSnackbar(message = it, actionLabel = "Retry message")
                     }
                 }
+            }
+        }
+    }*/
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        bottomBar = { BottomBar(controller = navController) },  // Pasa el navController correctamente aquí
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValue ->
+        NavHost(
+            navController = navController, startDestination = NavigationRoutes.LoginScreen.route
+        ) {
+            composable(NavigationRoutes.LoginScreen.route) {
+                LoginScreen(
+                    onNavigateToRegisterScreen = { navController.navigate(NavigationRoutes.RegisterScreen.route) },
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
+            composable(NavigationRoutes.RegisterScreen.route) {
+                RegisterScreen(
+                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    modifier = Modifier.padding(paddingValue)
+                )
+            }
+
+            composable(NavigationRoutes.HomeScreen.route) {
+                HomeScreen(
+                    modifier = Modifier.padding(paddingValue),
+                    onError = { message ->
+                        // Este es el bloque composable que maneja el error
+                        LaunchedEffect(message) {
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                actionLabel = "Retry"
+                            )
+                        }
+                    },
+                    navController = navController
+                )
             }
         }
     }
