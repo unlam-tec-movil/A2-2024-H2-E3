@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.ui.screens
+package ar.edu.unlam.mobile.scaffolding.ui.screens.home
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.Composable
@@ -13,6 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.navigation.NavHostController
+import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
 @Composable
 fun HomeScreen(
@@ -29,7 +31,8 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("crearTuitScreen")
+//                    TODO agregar funcionalidad de navigacion en MainActivity
+//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
                 }
             ) {
                 Icon(

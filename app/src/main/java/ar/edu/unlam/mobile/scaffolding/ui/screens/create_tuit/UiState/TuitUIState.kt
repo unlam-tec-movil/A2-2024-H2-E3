@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.ui.screens.TuitScreens.UiState
+package ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState
 
 sealed class TuitUIState {
     object Loading : TuitUIState() // Estado de carga
