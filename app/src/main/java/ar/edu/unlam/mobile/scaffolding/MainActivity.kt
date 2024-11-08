@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.RegisterScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
@@ -105,6 +106,10 @@ fun MainScreen() {
                     },
                     navController = navController
                 )
+            }
+
+            composable(NavigationRoutes.CreateTuitScreen.route) {
+                CreateTuitScreen(onTuitCreated = { navController.popBackStack() })
             }
         }
     }

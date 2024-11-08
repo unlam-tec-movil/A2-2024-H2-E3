@@ -11,6 +11,6 @@ fun ErrorScreen(errorMessage: String) {
     Text(
         text = errorMessage,
         color = Color.Red,
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
     )
 }
