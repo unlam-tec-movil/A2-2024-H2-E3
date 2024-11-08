@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.data.network
+package ar.edu.unlam.mobile.scaffolding.data.local
 
 import android.content.Context
 import javax.inject.Inject

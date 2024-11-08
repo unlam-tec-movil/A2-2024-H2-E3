@@ -36,8 +36,8 @@ fun LoginScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.UserUiState.collectLatest { event ->
-            when(event){
+        viewModel.userUiState.collectLatest { event ->
+            when (event) {
                 is UserUiEvent.NavigateToRegisterScreen -> onNavigateToRegisterScreen()
                 is UserUiEvent.NavigateToHomeScreen -> onNavigateToHomeScreen()
                 is UserUiEvent.ShowError -> snackBarHostState.showSnackbar(event.message)
@@ -57,37 +57,29 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(id = R.string.welcome_text),
-                style = TextStyle(
+                text = stringResource(id = R.string.welcome_text), style = TextStyle(
                     fontSize = 40.sp,
                     color = Color.Blue,
                     letterSpacing = 2.sp,
-                ),
-                modifier = Modifier.padding(bottom = 32.dp)
+                ), modifier = Modifier.padding(bottom = 32.dp)
             )
-            LoginInputs(
-                loginState = loginState,
-                onEmailChange = { inputString ->
-                    viewModel.onLoginEvent(
-                        event = LoginUiEvent.UpdateEmail(
-                            email = inputString
-                        )
+            LoginInputs(loginState = loginState, onEmailChange = { inputString ->
+                viewModel.onLoginEvent(
+                    event = LoginUiEvent.UpdateEmail(
+                        email = inputString
                     )
-                },
-                onPasswordChange = { inputString ->
-                    viewModel.onLoginEvent(
-                        event = LoginUiEvent.UpdatePassword(
-                            password = inputString
-                        )
+                )
+            }, onPasswordChange = { inputString ->
+                viewModel.onLoginEvent(
+                    event = LoginUiEvent.UpdatePassword(
+                        password = inputString
                     )
-                },
-                onRegisterTextClicked = {
-                    viewModel.onLoginEvent(event = LoginUiEvent.RegisterTextClicked)
-                },
-                onSubmit = {
-                    viewModel.onLoginEvent(event = LoginUiEvent.Submit)
-                }
-            )
+                )
+            }, onRegisterTextClicked = {
+                viewModel.onLoginEvent(event = LoginUiEvent.RegisterTextClicked)
+            }, onSubmit = {
+                viewModel.onLoginEvent(event = LoginUiEvent.Submit)
+            })
 
         }
     }
