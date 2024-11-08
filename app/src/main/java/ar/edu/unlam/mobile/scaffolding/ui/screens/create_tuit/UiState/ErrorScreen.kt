@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.ui.screens.TuitScreens.UiState
+package ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
