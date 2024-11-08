@@ -38,7 +38,7 @@ class TuitDataSource
                 emit(tuits)
             }
 
-        override fun createTuit(tuit: Tuit) {
+        override suspend fun createTuit(tuit: Tuit) {
             tuits.add(tuit)
         }
     }
