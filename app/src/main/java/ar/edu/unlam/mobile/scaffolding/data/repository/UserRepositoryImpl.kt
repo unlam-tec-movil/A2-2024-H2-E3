@@ -28,8 +28,18 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun register(user: User): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun register(user: User) {
+        try {
+            val response = apiService.createUser(user)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    tokenManager.userToken = it.token
+                }
+            } else {
+                throw Exception("Error ${response.code()}")
+            }
+        } catch (e: Exception) {
+            throw e
+        }
     }
-
 }

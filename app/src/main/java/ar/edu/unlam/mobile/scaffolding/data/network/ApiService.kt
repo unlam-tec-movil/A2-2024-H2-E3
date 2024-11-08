@@ -26,7 +26,7 @@ interface ApiService {
     @POST("/api/v1/users")
     suspend fun createUser(
         @Body user: User,
-    ): Response<User>
+    ): Response<LoginResponse>
 
     @POST("/api/v1/me/tuits")
     suspend fun createTuit(

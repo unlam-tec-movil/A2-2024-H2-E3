@@ -5,5 +5,5 @@ import ar.edu.unlam.mobile.scaffolding.domain.user.models.User
 interface UserRepository {
     suspend fun isUserLogged(): Boolean
     suspend fun login(email: String, password: String)
-    suspend fun register(user: User): Boolean
+    suspend fun register(user: User)
 }
