@@ -12,10 +12,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
@@ -42,83 +44,50 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-/*
-@Composable
-fun MainScreen() {
-    // Controller es el elemento que nos permite navegar entre pantallas. Tiene las acciones
-    // para navegar como naviegate y también la información de en dónde se "encuentra" el usuario
-    // a través del back stack
-    val navController = rememberNavController()
-    val snackbarHostState = remember { SnackbarHostState() }
-    Scaffold(
-        //TODO:: -BottomBar- *1* / Priority: Medium
-        // Description: Eliminar bottomBar de la pantalla de login y registro.
-        bottomBar = { BottomBar(controller = navController) },
-//        floatingActionButton = {
-//            IconButton(onClick = { navController.navigate(NavigationRoutes.HomeScreen.route) }) {
-//                Icon(Icons.Filled.Home, contentDescription = NavigationRoutes.HomeScreen.route)
-//            }
-//        },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-    ) { paddingValue ->
-        // NavHost es el componente que funciona como contenedor de los otros componentes que
-        // podrán ser destinos de navegación.
-        NavHost(
-            navController = navController, startDestination = NavigationRoutes.LoginScreen.route
-        ) {
-            // composable es el componente que se usa para definir un destino de navegación.
-            // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
-            composable(NavigationRoutes.LoginScreen.route) {
-                // LoginScreen, formulario de inicio de sesion
-                LoginScreen(
-                    onNavigateToRegisterScreen = { navController.navigate(NavigationRoutes.RegisterScreen.route) },
-                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
-                    modifier = Modifier.padding(paddingValue)
-                )
-            }
-
-            composable(NavigationRoutes.RegisterScreen.route) {
-                // RegisterScreen, formulario de registro
-                RegisterScreen(
-                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
-                    modifier = Modifier.padding(paddingValue)
-                )
-            }
-
-            composable(NavigationRoutes.HomeScreen.route) {
-                // HomeScreen, lista de tuits
-                HomeScreen(modifier = Modifier.padding(paddingValue)) {
-                    LaunchedEffect(snackbarHostState) {
-                        snackbarHostState.showSnackbar(message = it, actionLabel = "Retry message")
-                    }
-                }
-            }
-        }
-    }*/
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     Scaffold(
-        bottomBar = { BottomBar(controller = navController) },  // Pasa el navController correctamente aquí
+        // Mostrar `BottomBar` solo si el destino actual es `HomeScreen`
+        bottomBar = {
+            if (currentDestination?.route == NavigationRoutes.HomeScreen.route) {
+                BottomBar(controller = navController)
+            }
+        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValue ->
+        // Configuración de NavHost para controlar las rutas de la app
         NavHost(
-            navController = navController, startDestination = NavigationRoutes.LoginScreen.route
+            navController = navController,
+            startDestination = NavigationRoutes.LoginScreen.route
         ) {
             composable(NavigationRoutes.LoginScreen.route) {
                 LoginScreen(
-                    onNavigateToRegisterScreen = { navController.navigate(NavigationRoutes.RegisterScreen.route) },
-                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    onNavigateToRegisterScreen = {
+                        navController.navigate(NavigationRoutes.RegisterScreen.route)
+                    },
+                    onNavigateToHomeScreen = {
+                        navController.navigate(NavigationRoutes.HomeScreen.route) {
+                            popUpTo(NavigationRoutes.LoginScreen.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
                     modifier = Modifier.padding(paddingValue)
                 )
             }
 
             composable(NavigationRoutes.RegisterScreen.route) {
                 RegisterScreen(
-                    onNavigateToHomeScreen = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    onNavigateToHomeScreen = {
+                        navController.navigate(NavigationRoutes.HomeScreen.route) {
+                            popUpTo(NavigationRoutes.RegisterScreen.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
                     modifier = Modifier.padding(paddingValue)
                 )
             }
@@ -127,7 +96,6 @@ fun MainScreen() {
                 HomeScreen(
                     modifier = Modifier.padding(paddingValue),
                     onError = { message ->
-                        // Este es el bloque composable que maneja el error
                         LaunchedEffect(message) {
                             snackbarHostState.showSnackbar(
                                 message = message,

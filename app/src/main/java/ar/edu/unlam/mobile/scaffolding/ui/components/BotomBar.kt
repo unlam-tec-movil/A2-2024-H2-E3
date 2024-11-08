@@ -11,14 +11,26 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+
 
 @Composable
 fun BottomBar(controller: NavHostController) {
     val navBackStackEntry by controller.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     NavigationBar {
         NavigationBarItem(
-            selected = navBackStackEntry?.destination?.hierarchy?.any { it.route == "home" } == true,
-            onClick = { controller.navigate("home") },
+            selected = currentDestination?.hierarchy?.any { it.route == NavigationRoutes.HomeScreen.route } == true,
+            onClick = {
+                // Navega solo si no estás ya en "home"
+                if (currentDestination?.route != NavigationRoutes.HomeScreen.route) {
+                    controller.navigate(NavigationRoutes.HomeScreen.route) {
+                        popUpTo(NavigationRoutes.HomeScreen.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            },
             icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
