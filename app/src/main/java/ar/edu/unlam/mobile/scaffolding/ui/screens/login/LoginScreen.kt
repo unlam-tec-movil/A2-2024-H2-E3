@@ -35,6 +35,8 @@ fun LoginScreen(
     val loginState by remember { viewModel.loginState }
     val snackBarHostState = remember { SnackbarHostState() }
 
+    viewModel.isUserLogged()
+
     LaunchedEffect(Unit) {
         viewModel.userUiState.collectLatest { event ->
             when (event) {
@@ -80,7 +82,6 @@ fun LoginScreen(
             }, onSubmit = {
                 viewModel.onLoginEvent(event = LoginUiEvent.Submit)
             })
-
         }
     }
 }

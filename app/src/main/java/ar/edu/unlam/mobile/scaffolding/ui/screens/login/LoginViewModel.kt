@@ -9,8 +9,6 @@ import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.event.LoginUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.state.LoginErrorState
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.state.LoginState
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationErrorState
-import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,13 +18,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-//    private val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private var _loginState = mutableStateOf(LoginState())
     val loginState: State<LoginState> = _loginState
 
     private val _userUiState = MutableSharedFlow<UserUiEvent>()
     val userUiState: SharedFlow<UserUiEvent> = _userUiState.asSharedFlow()
+
+    fun isUserLogged() {
+        viewModelScope.launch {
+            if (userRepository.isUserLogged()) {
+                emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
+            }
+        }
+    }
 
     fun onLoginEvent(event: LoginUiEvent) {
         when (event) {
@@ -53,7 +59,14 @@ class LoginViewModel @Inject constructor(
 
             is LoginUiEvent.Submit -> {
                 if(areAnyFieldEmpty()){
-                    emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
+                    viewModelScope.launch{
+                        try{
+                            userRepository.login(_loginState.value.emailTextField.trim(), _loginState.value.passwordTextField.trim())
+                            emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
+                        }catch (e: Exception){
+                            emitUserEvent(event = UserUiEvent.ShowError("Error: Email o contraseña incorrecto"))
+                        }
+                    }
                 }else{
                     emitUserEvent(event = UserUiEvent.ShowError("Por favor complete los campos vacios"))
                 }
@@ -70,14 +83,14 @@ class LoginViewModel @Inject constructor(
                 _loginState.value = loginState.value.copy(
                     errorState = LoginErrorState(emailErrorState = true)
                 )
-                return false
+                false
             }
 
             passwordString.isEmpty() -> {
                 _loginState.value = loginState.value.copy(
                     errorState = LoginErrorState(passwordErrorState = true)
                 )
-                return false
+                false
             }
 
             // sin errores
@@ -85,7 +98,7 @@ class LoginViewModel @Inject constructor(
                 // default error state
                 _loginState.value =
                     loginState.value.copy(errorState = LoginErrorState())
-                return true
+                true
             }
         }
     }
