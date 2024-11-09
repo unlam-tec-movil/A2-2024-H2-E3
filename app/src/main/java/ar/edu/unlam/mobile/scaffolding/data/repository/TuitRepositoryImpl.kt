@@ -16,4 +16,8 @@ class TuitRepositoryImpl(
             val response = apiService.getFeed()
             emit(response)
         }.flowOn(Dispatchers.IO)
+
+    override suspend fun createTuit(tuit: Tuit) {
+        TODO("Not yet implemented")
+    }
 }

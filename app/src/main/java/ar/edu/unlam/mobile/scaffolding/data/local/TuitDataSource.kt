@@ -36,7 +36,4 @@ class TuitDataSource {
 
 <<<<<<< HEAD
      */
-    suspend fun createTuit(tuit: Tuit) {
-        tuits.add(tuit)
-    }
 }
