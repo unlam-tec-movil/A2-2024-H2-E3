@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.ui.screens
+package ar.edu.unlam.mobile.scaffolding.ui.screens.home
 
 import android.util.Log
 import androidx.compose.runtime.Immutable

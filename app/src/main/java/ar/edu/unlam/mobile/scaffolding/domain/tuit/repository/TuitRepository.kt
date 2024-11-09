@@ -5,4 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TuitRepository {
     suspend fun getTuits(): Flow<List<Tuit>>
+
+    // Convertir createTuit en función suspendida
+    suspend fun createTuit(tuit: Tuit)
 }
