@@ -5,6 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.domain.user.models.User
+import ar.edu.unlam.mobile.scaffolding.domain.user.repository.UserRepository
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.event.RegistrationUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.state.RegistrationState
@@ -18,7 +20,9 @@ import javax.inject.Inject
 
 //TODO ADD USER REPOSITORY
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
 
     private val _registrationState = mutableStateOf(RegistrationState())
     val registrationState: State<RegistrationState> = _registrationState
@@ -66,7 +70,20 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
             is RegistrationUiEvent.Submit -> {
                 if (areAnyFieldEmpty()) {
                     if(isConfirmPasswordCorrect()){
-                        emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
+                        viewModelScope.launch {
+                            try {
+                                userRepository.register(
+                                    User(
+                                        email = _registrationState.value.emailTextField.trim(),
+                                        name = _registrationState.value.usernameTextField.trim(),
+                                        password = _registrationState.value.passwordTextField.trim()
+                                    )
+                                )
+                                emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
+                            } catch (e: Exception) {
+                                emitUserEvent(event = UserUiEvent.ShowError("ERROR: ${e.message}"))
+                            }
+                        }
                     }else{
                         emitUserEvent(event = UserUiEvent.ShowError("Las contraseñas no coinciden"))
                     }
