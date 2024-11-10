@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CrearTuitViewModel @Inject constructor(
+class CreateTuitViewModel @Inject constructor(
     private val tuitRepository: TuitRepository
 ) : ViewModel() {
 
