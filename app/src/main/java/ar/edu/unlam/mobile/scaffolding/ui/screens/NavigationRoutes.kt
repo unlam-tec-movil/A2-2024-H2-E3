@@ -5,4 +5,6 @@ sealed class NavigationRoutes(val route: String){
     data object HomeScreen: NavigationRoutes("home")
     data object RegisterScreen: NavigationRoutes("register")
     data object LoginScreen: NavigationRoutes("login")
+    data object CreateTuitScreen : NavigationRoutes("createTuitScreen")
+
 }

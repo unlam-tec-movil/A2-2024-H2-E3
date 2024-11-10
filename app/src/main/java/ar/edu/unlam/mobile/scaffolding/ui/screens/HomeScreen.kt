@@ -1,4 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens
+/*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.Composable
@@ -58,5 +59,116 @@ fun HomeScreen(
             }
         }
     }
+}*/
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
+
+/*
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onError: @Composable (message: String) -> Unit = {},
+    navController: NavHostController
+) {
+    val uiState: TuitUIState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate("crearTuitScreen") // Navegar a la pantalla de crear tuit
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Crear Tuit"
+                )
+            }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        when (val tuitState = uiState.feedUiState) {
+            is FeedUIState.Loading -> {
+                LoadingScreen()
+            }
+            is FeedUIState.Success -> {
+                Feed(tuits = tuitState.tuits, modifier = modifier.padding(paddingValues))
+            }
+            is FeedUIState.Error -> {
+                LaunchedEffect(snackbarHostState) {
+                    snackbarHostState.showSnackbar(
+                        message = tuitState.message,
+                        actionLabel = "Retry"
+                    )
+                }
+                onError(tuitState.message)
+            }
+        }
+    }
+}*/
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onError: @Composable (message: String) -> Unit = {},
+    navController: NavHostController
+) {
+    val uiState: TuitUIState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Recuperar el nuevo tuit del SavedStateHandle
+    navController.previousBackStackEntry?.savedStateHandle?.get<Tuit>("newTuit")?.let { newTuit ->
+        // Agregar el nuevo tuit a la lista en el ViewModel
+        viewModel.addTuit(newTuit)
+    }
+
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Crear Tuit"
+                )
+            }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { paddingValues ->
+        when (val tuitState = uiState.feedUiState) {
+            is FeedUIState.Loading -> {
+                LoadingScreen()
+            }
+            is FeedUIState.Success -> {
+                // Mostrar los tuits con el Feed
+                Feed(tuits = tuitState.tuits, modifier = modifier.padding(paddingValues))
+            }
+            is FeedUIState.Error -> {
+                // Mostrar error en caso de que haya problemas con la carga de tuits
+                LaunchedEffect(snackbarHostState) {
+                    snackbarHostState.showSnackbar(
+                        message = tuitState.message,
+                        actionLabel = "Retry"
+                    )
+                }
+                onError(tuitState.message)
+            }
+        }
+    }
 }
+
 

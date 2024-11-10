@@ -1,5 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens
-
+/*
 import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
@@ -61,4 +61,72 @@ class HomeViewModel
                     }
             }
         }
+    }*/
+import android.util.Log
+import androidx.compose.runtime.Immutable
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@Immutable
+sealed interface FeedUIState {
+    data class Success(
+        val tuits: List<Tuit>,
+    ) : FeedUIState
+
+    data object Loading : FeedUIState
+
+    data class Error(
+        val message: String,
+    ) : FeedUIState
+}
+
+data class TuitUIState(
+    val feedUiState: FeedUIState,
+)
+
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val tuitRepository: TuitRepository,
+) : ViewModel() {
+
+    // Lista local de tweets que se mantiene en memoria
+    private val localTuits = mutableListOf<Tuit>()
+
+    // Estado general del ViewModel expuesto para la UI
+    private val _uiState = MutableStateFlow<TuitUIState>(TuitUIState(FeedUIState.Loading))
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        loadInitialTuits()
     }
+
+    // Función para cargar tweets iniciales desde el repositorio
+    private fun loadInitialTuits() {
+        viewModelScope.launch {
+            tuitRepository.getTuits()
+                .catch { exception ->
+                    Log.e("HomeViewModel", "Error fetching tuits", exception)
+                    _uiState.value = TuitUIState(FeedUIState.Error("Error"))
+                }
+                .collect { tuits ->
+                    // Cargamos los tweets desde el repositorio en la lista local
+                    localTuits.addAll(tuits)
+                    _uiState.value = TuitUIState(FeedUIState.Success(localTuits))
+                }
+        }
+    }
+
+    // Función para agregar un nuevo tweet a la lista local y actualizar el estado
+    fun addTuit(newTuit: Tuit) {
+        localTuits.add(newTuit)
+        _uiState.value = TuitUIState(FeedUIState.Success(localTuits))
+    }
+}
