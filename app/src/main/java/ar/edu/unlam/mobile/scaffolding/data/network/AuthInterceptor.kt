@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.network
 
-import android.util.Log
+import ar.edu.unlam.mobile.scaffolding.data.local.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -16,8 +16,6 @@ class AuthInterceptor(
                     tokenManager.userToken?.let { addHeader("Authorization", "Bearer $it") }
                     addHeader("Application-Token", tokenManager.appToken)
                 }.build()
-        //TODO eliminar Log
-        Log.d("AuthInterceptor", "userToken: ${tokenManager.userToken}, appToken: ${tokenManager.appToken}")
         return chain.proceed(request)
     }
 }
