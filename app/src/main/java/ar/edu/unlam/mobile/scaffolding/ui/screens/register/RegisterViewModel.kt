@@ -86,7 +86,7 @@ class RegisterViewModel @Inject constructor(
                                 )
                                 emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
                             } catch (e: Exception) {
-                                emitUserEvent(event = UserUiEvent.ShowError("ERROR: ${e.message}"))
+                                emitUserEvent(event = UserUiEvent.ShowError("Por favor ingrese un email valido"))
                             }
                         } else {
                             emitUserEvent(event = UserUiEvent.ShowError("Las contraseñas no coinciden"))
