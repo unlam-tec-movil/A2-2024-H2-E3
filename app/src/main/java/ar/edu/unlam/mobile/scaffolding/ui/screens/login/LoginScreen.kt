@@ -35,9 +35,10 @@ fun LoginScreen(
     val loginState by remember { viewModel.loginState }
     val snackBarHostState = remember { SnackbarHostState() }
 
-    viewModel.isUserLogged()
 
     LaunchedEffect(Unit) {
+        viewModel.isUserLogged()
+
         viewModel.userUiState.collectLatest { event ->
             when (event) {
                 is UserUiEvent.NavigateToRegisterScreen -> onNavigateToRegisterScreen()
@@ -47,6 +48,7 @@ fun LoginScreen(
             }
         }
     }
+
 
     Scaffold(modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { padding ->
