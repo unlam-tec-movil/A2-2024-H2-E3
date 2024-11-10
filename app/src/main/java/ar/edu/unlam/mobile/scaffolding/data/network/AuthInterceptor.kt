@@ -1,7 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.network
 
 import android.util.Log
-import ar.edu.unlam.mobile.scaffolding.data.local.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 

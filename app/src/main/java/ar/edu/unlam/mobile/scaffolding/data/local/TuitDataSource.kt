@@ -1,7 +1,11 @@
 package ar.edu.unlam.mobile.scaffolding.data.local
 
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+
 class TuitDataSource {
-        /*
+    private val tuits = mutableListOf<Tuit>()
+
+    /*
         private val tuits = mutableListOf<Tuit>()
 
         init {
@@ -30,5 +34,6 @@ class TuitDataSource {
                 emit(tuits)
             }
 
-         */
+<<<<<<< HEAD
+     */
 }
