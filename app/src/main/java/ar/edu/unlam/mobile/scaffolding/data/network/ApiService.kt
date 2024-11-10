@@ -1,5 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.data.network
 
+import ar.edu.unlam.mobile.scaffolding.data.network.request.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.network.response.LoginResponse
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.domain.user.models.User
 import retrofit2.Response
@@ -17,12 +19,14 @@ interface ApiService {
     suspend fun getProfile(): User
 
     @POST("/api/v1/login")
-    suspend fun login()
+    suspend fun login(
+        @Body loginRequest: LoginRequest,
+    ): Response<LoginResponse>
 
     @POST("/api/v1/users")
     suspend fun createUser(
         @Body user: User,
-    ): Response<User>
+    ): Response<LoginResponse>
 
     @POST("/api/v1/me/tuits")
     suspend fun createTuit(

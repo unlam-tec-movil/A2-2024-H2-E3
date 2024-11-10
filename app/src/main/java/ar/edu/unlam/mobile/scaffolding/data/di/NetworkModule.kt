@@ -4,9 +4,11 @@ import android.content.Context
 import ar.edu.unlam.mobile.scaffolding.data.network.ApiService
 import ar.edu.unlam.mobile.scaffolding.data.network.AuthInterceptor
 import ar.edu.unlam.mobile.scaffolding.data.network.RetrofitService
-import ar.edu.unlam.mobile.scaffolding.data.network.TokenManager
-import ar.edu.unlam.mobile.scaffolding.data.repository.TuitRepositoryImpl
+import ar.edu.unlam.mobile.scaffolding.data.local.TokenManager
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
+import ar.edu.unlam.mobile.scaffolding.data.repository.TuitRepositoryImpl
+import ar.edu.unlam.mobile.scaffolding.domain.user.repository.UserRepository
+import ar.edu.unlam.mobile.scaffolding.data.repository.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,4 +37,7 @@ object NetworkModule {
 
     @Provides
     fun provideTuitRepository(apiService: ApiService): TuitRepository = TuitRepositoryImpl(apiService)
+
+    @Provides
+    fun provideUserRepository(apiService: ApiService, tokenManager: TokenManager): UserRepository = UserRepositoryImpl(apiService, tokenManager)
 }

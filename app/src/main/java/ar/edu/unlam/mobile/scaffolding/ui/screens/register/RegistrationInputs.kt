@@ -35,7 +35,6 @@ fun RegistrationInputs(
             onValueChange = onEmailChange,
             label = stringResource(id = R.string.email_label),
             isError = registrationState.errorState.emailErrorState,
-//            errorText = stringResource(id = registrationState.errorState.emailErrorState.errorMessageStringResource)
         )
         // Username
         UsernameTextField(
@@ -46,8 +45,7 @@ fun RegistrationInputs(
             onValueChange = onUsernameChange,
             label = stringResource(id = R.string.username_label),
             isError = (registrationState.errorState.usernameErrorState),
-//            errorText = stringResource(id = registrationState.errorState.usernameErrorState.errorMessageStringResource)
-        )
+            )
         // Password
         PasswordTextField(
             modifier = Modifier
@@ -57,7 +55,6 @@ fun RegistrationInputs(
             onValueChange = onPasswordChange,
             label = stringResource(id = R.string.password_label),
             isError = (registrationState.errorState.passwordErrorState),
-//            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
         )
         // Confirm password
         ConfirmPasswordTextField(
@@ -68,7 +65,6 @@ fun RegistrationInputs(
             onValueChange = onConfirmPasswordChange,
             label = stringResource(id = R.string.confirm_password_label),
             isError = (registrationState.errorState.confirmPasswordErrorState),
-//            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
         )
 
         NormalButton(
