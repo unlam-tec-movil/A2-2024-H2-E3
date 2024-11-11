@@ -112,7 +112,14 @@ fun MainScreen() {
             composable(NavigationRoutes.ProfileScreen.route){
                 ProfileScreen(
                     modifier = Modifier.padding(paddingValue),
-                    navController = navController
+                    onError = { message ->
+                        LaunchedEffect(message) {
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                actionLabel = "Retry"
+                            )
+                        }
+                    },
                 )
             }
         }

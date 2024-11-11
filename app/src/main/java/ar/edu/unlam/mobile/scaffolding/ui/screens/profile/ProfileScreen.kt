@@ -5,28 +5,44 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
-    navController: NavHostController
+    onError: @Composable (message: String) -> Unit = {}
 ) {
+    val uiState: UiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
-        Text(
-            modifier = Modifier.padding(paddingValues).fillMaxSize(),
-            text = "Perfil"
-        )
+        when (val state = uiState.profileUiState) {
+            is ProfileUiState.Loading -> {
+                LoadingScreen()
+            }
+            is ProfileUiState.Success -> {
+                Profile(modifier = Modifier.padding(paddingValues))
+            }
+            is ProfileUiState.Error -> {
+                LaunchedEffect(snackbarHostState) {
+                    snackbarHostState.showSnackbar(
+                        message = state.message,
+                        actionLabel = "Retry"
+                    )
+                }
+                onError(state.message)
+            }
+        }
     }
 }
