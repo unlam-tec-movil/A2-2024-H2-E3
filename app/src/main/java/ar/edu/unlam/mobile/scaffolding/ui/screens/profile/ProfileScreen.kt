@@ -12,33 +12,42 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
-    onError: @Composable (message: String) -> Unit = {}
+    onError: @Composable (message: String) -> Unit = {},
+    navController: NavHostController
 ) {
     val uiState: UiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { paddingValues ->
+    Scaffold(modifier = modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
         when (val state = uiState.profileUiState) {
             is ProfileUiState.Loading -> {
                 LoadingScreen()
             }
+
             is ProfileUiState.Success -> {
-                Profile(modifier = Modifier.padding(paddingValues))
+                ProfileCard(
+                    modifier = Modifier.padding(paddingValues),
+                    profile = state.profile,
+                    onLogout = {
+//                        viewModel.logout()
+                        navController.navigate(NavigationRoutes.LoginScreen.route)
+                    }
+                )
             }
+
             is ProfileUiState.Error -> {
                 LaunchedEffect(snackbarHostState) {
                     snackbarHostState.showSnackbar(
-                        message = state.message,
-                        actionLabel = "Retry"
+                        message = state.message, actionLabel = "Retry"
                     )
                 }
                 onError(state.message)

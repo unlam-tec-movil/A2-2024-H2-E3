@@ -39,7 +39,11 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             delay(1000)
-            _uiState.value = UiState(ProfileUiState.Success(Profile("", "")))
+            _uiState.value = UiState(ProfileUiState.Success(
+                Profile(
+                    username = "Robert Downey Jr",
+                    email = "Robert@gmail.com",
+                    avatar = "https://pluspng.com/img-png/iron-man-png-hd-iron-man-clipart-png-image-512.png")))
         }
     }
 }

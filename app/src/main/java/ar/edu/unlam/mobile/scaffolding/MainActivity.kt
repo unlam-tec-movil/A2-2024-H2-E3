@@ -120,6 +120,7 @@ fun MainScreen() {
                             )
                         }
                     },
+                    navController = navController
                 )
             }
         }
