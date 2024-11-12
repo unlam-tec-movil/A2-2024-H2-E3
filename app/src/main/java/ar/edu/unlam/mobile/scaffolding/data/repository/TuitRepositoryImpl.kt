@@ -20,4 +20,8 @@ class TuitRepositoryImpl(
     override suspend fun createTuit(tuit: Tuit) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun addLike(id: Int) {
+        apiService.addLike(id)
+    }
 }

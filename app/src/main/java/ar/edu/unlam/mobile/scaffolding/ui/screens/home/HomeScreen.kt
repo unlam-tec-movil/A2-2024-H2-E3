@@ -1,4 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.home
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.Composable
@@ -12,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
-import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
 @Composable
 fun HomeScreen(
@@ -27,20 +31,6 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-//                    TODO agregar funcionalidad de navigacion en MainActivity
-//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Crear Tuit"
-                )
-            }
-        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         when (val tuitState = uiState.feedUiState) {
@@ -48,7 +38,7 @@ fun HomeScreen(
                 LoadingScreen()
             }
             is FeedUIState.Success -> {
-                Feed(tuits = tuitState.tuits, modifier = modifier.padding(paddingValues))
+                Feed(tuits = tuitState.tuits, modifier = modifier.padding(paddingValues), viewModel)
             }
             is FeedUIState.Error -> {
                 LaunchedEffect(snackbarHostState) {

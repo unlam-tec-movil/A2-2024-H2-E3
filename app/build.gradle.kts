@@ -1,6 +1,6 @@
-import java.util.Properties
 import java.io.File
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -33,7 +33,9 @@ android {
             properties.load(FileInputStream(localProperties))
         }
         buildConfigField(
-            "String", "API_KEY", "\"${properties.getProperty("API_TOKEN", "default_key")}\""
+            "String",
+            "API_KEY",
+            "\"${properties.getProperty("Application-Token", "823fc425e5efbbfc60a32c7c5882667527857d7cfa2d4b7cc095c652e12376e4")}\"",
         )
     }
 
@@ -78,7 +80,7 @@ dependencies {
 
     implementation(libs.io.coil.kt)
 
-    //retrofit
+    // retrofit
     implementation(libs.retrofit)
     implementation(libs.gsonConverter)
 

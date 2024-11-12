@@ -1,6 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,23 +29,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeViewModel
 import coil.compose.AsyncImage
 
-
 @Composable
-fun TuitCard(tuit: Tuit) {
+fun TuitCard(
+    tuit: Tuit,
+    viewModel: HomeViewModel,
+) {
     Card(
         modifier =
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
         Row(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TuitImage(tuit)
@@ -55,14 +59,25 @@ fun TuitCard(tuit: Tuit) {
         }
         Row {
             Spacer(modifier = Modifier.width(4.dp))
-
-            TuitLike(tuit)
-            TuitLikesCounter(tuit)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.padding(2.dp)
+            ) {
+                TuitLike(tuit, viewModel)
+                TuitLikesCounter(tuit)
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TuitReply(tuit)
-            TuitRepliesCounter(tuit)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.padding(2.dp)
+            ) {
+                TuitReply(tuit)
+                TuitRepliesCounter(tuit)
+            }
         }
     }
 }
@@ -77,26 +92,24 @@ fun TuitReply(tuit: Tuit) {
     }
 }
 
-
-
 @Composable
 fun TuitImage(tuit: Tuit) {
     if (tuit.avatar.isNullOrEmpty()) {
         Box(
             modifier =
-            Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(Color.Gray),
+                Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(Color.Gray),
         )
     } else {
         AsyncImage(
             model = tuit.avatar,
             contentDescription = "avatar",
             modifier =
-            Modifier
-                .size(50.dp)
-                .clip(CircleShape)
+                Modifier
+                    .size(50.dp)
+                    .clip(CircleShape),
         )
     }
 }
@@ -106,10 +119,10 @@ fun TuitContent(tuit: Tuit) {
     Row {
         Column(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(4.dp))
-                .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(4.dp))
+                    .padding(16.dp),
         ) {
             Text(
                 text = tuit.authorName,
@@ -130,8 +143,11 @@ fun TuitContent(tuit: Tuit) {
 }
 
 @Composable
-fun TuitLike(tuit: Tuit) {
-    IconButton(onClick = { tuit.likes++ }) {
+fun TuitLike(
+    tuit: Tuit,
+    viewModel: HomeViewModel,
+) {
+    IconButton(onClick = { viewModel.likeTuit(tuit)}) {
         Icon(
             imageVector = Icons.Filled.ThumbUp,
             contentDescription = "add like",
@@ -145,7 +161,7 @@ fun TuitLikesCounter(tuit: Tuit) {
         text = tuit.likes.toString(),
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(4.dp)  // Espaciado para que no quede muy apretado
+        modifier = Modifier.padding(2.dp),
     )
 }
 
@@ -155,6 +171,6 @@ fun TuitRepliesCounter(tuit: Tuit) {
         text = tuit.replies.toString(),
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(4.dp),
     )
 }
