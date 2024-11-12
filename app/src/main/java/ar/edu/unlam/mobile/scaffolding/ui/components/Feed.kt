@@ -7,15 +7,16 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeViewModel
 
 @Composable
 fun Feed(
     tuits: List<Tuit>,
     modifier: Modifier,
+    viewModel: HomeViewModel,
 ) {
     LazyColumn(
         modifier =
@@ -28,7 +29,7 @@ fun Feed(
             ),
     ) {
         items(tuits) { tuit ->
-            TuitCard(tuit = tuit)
+            TuitCard(tuit = tuit, viewModel)
         }
     }
 }

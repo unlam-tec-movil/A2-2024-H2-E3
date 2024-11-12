@@ -3,8 +3,13 @@ package ar.edu.unlam.mobile.scaffolding
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -14,14 +19,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
-import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.profile.ProfileScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.register.RegisterScreen
@@ -45,6 +52,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -60,12 +68,31 @@ fun MainScreen() {
                 BottomBar(controller = navController)
             }
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        floatingActionButton = {
+            Box(modifier = Modifier.fillMaxSize()){
+                FloatingActionButton(
+                    onClick = {
+//                    TODO agregar funcionalidad de navigacion en MainActivity
+//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Crear Tuit"
+                    )
+                }
+            }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValue ->
         // Configuración de NavHost para controlar las rutas de la app
         NavHost(
             navController = navController,
-            startDestination = NavigationRoutes.LoginScreen.route
+            //startDestination = NavigationRoutes.LoginScreen.route,
+            startDestination = NavigationRoutes.LoginScreen.route,
         ) {
             composable(NavigationRoutes.LoginScreen.route) {
                 LoginScreen(
@@ -78,7 +105,7 @@ fun MainScreen() {
                             launchSingleTop = true
                         }
                     },
-                    modifier = Modifier.padding(paddingValue)
+                    modifier = Modifier.padding(paddingValue),
                 )
             }
 
@@ -90,7 +117,7 @@ fun MainScreen() {
                             launchSingleTop = true
                         }
                     },
-                    modifier = Modifier.padding(paddingValue)
+                    modifier = Modifier.padding(paddingValue),
                 )
             }
 
@@ -101,11 +128,11 @@ fun MainScreen() {
                         LaunchedEffect(message) {
                             snackbarHostState.showSnackbar(
                                 message = message,
-                                actionLabel = "Retry"
+                                actionLabel = "Retry",
                             )
                         }
                     },
-                    navController = navController
+                    navController = navController,
                 )
             }
 
@@ -126,4 +153,3 @@ fun MainScreen() {
         }
     }
 }
-

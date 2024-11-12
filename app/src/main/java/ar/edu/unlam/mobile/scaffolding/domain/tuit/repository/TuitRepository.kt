@@ -8,4 +8,6 @@ interface TuitRepository {
 
     // Convertir createTuit en función suspendida
     suspend fun createTuit(tuit: Tuit)
+
+    suspend fun addLike(id: Int)
 }
