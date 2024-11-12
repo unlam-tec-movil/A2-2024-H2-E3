@@ -13,7 +13,7 @@ class DeletelikeTuitUseCase
     ) {
         suspend operator fun invoke(tuit: Tuit) {
             try {
-                tuit.likes--
+                // tuit.likes--
                 tuitRepository.deleteLike(tuit.id)
             } catch (e: HttpException) {
                 Log.e("DeletelikeTuitUseCase", "Error al eliminar like: ${e.message}")

@@ -39,7 +39,7 @@ class CreateTuitViewModel
                             liked = false,
                             replies = 0,
                             date = "",
-                            reply = { /* Acción vacía o predeterminada */ },
+                            reply = "",
                         )
 
                     // Llama al repositorio para guardar el nuevo tuit

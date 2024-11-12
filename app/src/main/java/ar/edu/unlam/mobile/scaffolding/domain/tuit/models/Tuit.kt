@@ -11,5 +11,5 @@ data class Tuit(
     @SerializedName("liked") var liked: Boolean,
     var replies: Int,
     @SerializedName("date") val date: String,
-    val reply: (id: Int) -> Unit,
+    val reply: String? = null,
 )
