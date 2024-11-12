@@ -12,11 +12,6 @@ class UserRepositoryImpl(
     override suspend fun isUserLogged(): Boolean {
         return !tokenManager.userToken.isNullOrEmpty()
     }
-
-    override suspend fun logout() {
-        tokenManager.userToken = null
-    }
-
     override suspend fun login(email: String, password: String) {
         try {
             val response = apiService.login(LoginRequest(email, password))

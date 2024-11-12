@@ -2,6 +2,7 @@ package ar.edu.unlam.mobile.scaffolding.data.network
 
 import ar.edu.unlam.mobile.scaffolding.data.network.request.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.network.response.LoginResponse
+import ar.edu.unlam.mobile.scaffolding.domain.profile.models.Profile
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.domain.user.models.User
 import retrofit2.Response
@@ -16,7 +17,7 @@ interface ApiService {
     suspend fun getFeed(): List<Tuit>
 
     @GET("/api/v1/me/profile")
-    suspend fun getProfile(): User
+    suspend fun getProfile(): Profile
 
     @POST("/api/v1/login")
     suspend fun login(

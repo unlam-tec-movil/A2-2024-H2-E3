@@ -6,5 +6,4 @@ interface UserRepository {
     suspend fun isUserLogged(): Boolean
     suspend fun register(user: User)
     suspend fun login(email: String, password: String)
-    suspend fun logout()
 }

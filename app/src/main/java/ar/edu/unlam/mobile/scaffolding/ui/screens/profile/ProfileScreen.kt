@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import ar.edu.unlam.mobile.scaffolding.domain.profile.models.Profile
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
@@ -38,7 +39,7 @@ fun ProfileScreen(
                     modifier = Modifier.padding(paddingValues),
                     profile = state.profile,
                     onLogout = {
-//                        viewModel.logout()
+                        viewModel.logout()
                         navController.navigate(NavigationRoutes.LoginScreen.route)
                     }
                 )

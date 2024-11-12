@@ -39,7 +39,7 @@ fun ProfileCard(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         // Imagen de avatar
-        if (profile.avatar.isEmpty()) {
+        if (profile.avatar_url.isEmpty()) {
             Box(
                 modifier = Modifier
                     .size(200.dp)
@@ -49,7 +49,7 @@ fun ProfileCard(
             )
         } else {
             AsyncImage(
-                model = profile.avatar,
+                model = profile.avatar_url,
                 contentDescription = "avatar",
                 modifier = Modifier
                     .size(200.dp)
@@ -64,7 +64,7 @@ fun ProfileCard(
 
         // Nombre de usuario
         Text(
-            text = profile.username,
+            text = profile.name,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
