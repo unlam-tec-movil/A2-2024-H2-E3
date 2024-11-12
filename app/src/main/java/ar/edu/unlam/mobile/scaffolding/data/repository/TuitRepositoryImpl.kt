@@ -1,8 +1,10 @@
 package ar.edu.unlam.mobile.scaffolding.data.repository
 
+import android.util.Log
 import ar.edu.unlam.mobile.scaffolding.data.network.ApiService
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
+import coil.network.HttpException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,7 +23,21 @@ class TuitRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun addLike(id: Int) {
-        apiService.addLike(id)
+    override suspend fun addLike(tuitId: Int) {
+        try {
+            apiService.addLike(tuitId)
+        } catch (e: HttpException) {
+            Log.e("TuitRepository", "Error addLike: ${e.message}")
+            throw e
+        }
+    }
+
+    override suspend fun deleteLike(tuitId: Int) {
+        try {
+            apiService.deleteLike(tuitId)
+        } catch (e: HttpException) {
+            Log.e("TuitRepository", "Error deleteLike: ${e.message}")
+            throw e
+        }
     }
 }

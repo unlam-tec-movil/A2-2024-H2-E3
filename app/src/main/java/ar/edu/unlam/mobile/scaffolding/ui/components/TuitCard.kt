@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -149,8 +150,9 @@ fun TuitLike(
 ) {
     IconButton(onClick = { viewModel.likeTuit(tuit)}) {
         Icon(
-            imageVector = Icons.Filled.ThumbUp,
-            contentDescription = "add like",
+            imageVector = if (tuit.liked) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
+            contentDescription = if (tuit.liked) "delete like" else "add like",
+            tint = if (tuit.liked) Color.Blue else Color.Gray
         )
     }
 }

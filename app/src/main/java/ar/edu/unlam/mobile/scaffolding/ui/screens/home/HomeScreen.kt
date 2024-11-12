@@ -1,23 +1,22 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.home
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
 
 @Composable
@@ -25,13 +24,33 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onError: @Composable (message: String) -> Unit = {},
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val uiState: TuitUIState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        floatingActionButton = {
+            Box(modifier = Modifier.fillMaxSize()) {
+                FloatingActionButton(
+                    onClick = {
+//                    TODO agregar funcionalidad de navigacion en MainActivity
+//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
+                    },
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                            .offset(y = (-60).dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Crear Tuit",
+                    )
+                }
+            }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { paddingValues ->
         when (val tuitState = uiState.feedUiState) {
             is FeedUIState.Loading -> {
@@ -44,7 +63,7 @@ fun HomeScreen(
                 LaunchedEffect(snackbarHostState) {
                     snackbarHostState.showSnackbar(
                         message = tuitState.message,
-                        actionLabel = "Retry"
+                        actionLabel = "Retry",
                     )
                 }
                 onError(tuitState.message)
@@ -52,4 +71,3 @@ fun HomeScreen(
         }
     }
 }
-

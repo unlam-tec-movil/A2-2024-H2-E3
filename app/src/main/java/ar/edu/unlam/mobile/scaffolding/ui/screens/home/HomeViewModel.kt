@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.usecases.DeletelikeTuitUseCase
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.usecases.LikeTuitUseCase
 import coil.network.HttpException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,8 +40,8 @@ class HomeViewModel
     constructor(
         tuitRepository: TuitRepository,
         private val likeTuitUseCase: LikeTuitUseCase,
+        private val deletelikeTuitUseCase: DeletelikeTuitUseCase,
     ) : ViewModel() {
-
         // Mutable State Flow contiene un objeto de estado mutable. Simplifica la operación de
         // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
         // (https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
@@ -60,17 +61,23 @@ class HomeViewModel
             viewModelScope.launch {
                 try {
                     if (tuit.id != null) {
-                        likeTuitUseCase(tuit)
+                        if (tuit.liked) {
+                            deletelikeTuitUseCase(tuit)
+                        } else {
+                            likeTuitUseCase(tuit)
+                        }
+                        tuit.liked = !tuit.liked
                     } else {
                         Log.e("HomeViewModel", "El ID es nulo.")
                     }
                 } catch (e: HttpException) {
-                    Log.e("HomeViewModel", "Error en la solicitud de like: ${e.message}")
+                    Log.e("HomeViewModel", "Error en la solicitud: ${e.message}")
                 } catch (e: Exception) {
                     Log.e("HomeViewModel", "Error inesperado: ${e.localizedMessage}")
                 }
             }
         }
+
         init {
             viewModelScope.launch {
                 tuitRepository
