@@ -67,7 +67,7 @@ fun MainScreen() {
         // Configuración de NavHost para controlar las rutas de la app
         NavHost(
             navController = navController,
-            startDestination = NavigationRoutes.HomeScreen.route, // cambiar
+            startDestination = NavigationRoutes.LoginScreen.route,
         ) {
             composable(NavigationRoutes.LoginScreen.route) {
                 LoginScreen(

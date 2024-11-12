@@ -13,7 +13,7 @@ class LikeTuitUseCase
     ) {
         suspend operator fun invoke(tuit: Tuit) {
             try {
-                tuit.likes++
+                // tuit.likes++
                 tuitRepository.addLike(tuit.id)
             } catch (e: HttpException) {
                 Log.e("LikeTuitUseCase", "Error en addLike: ${e.message}")
