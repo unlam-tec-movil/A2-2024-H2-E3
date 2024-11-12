@@ -13,10 +13,7 @@ class TokenManager
 
         var userToken: String?
             get() =
-                preferences.getString(
-                    "Authorization",
-                    "",
-                )
+                preferences.getString("Authorization", "")
             set(value) = preferences.edit().putString("Authorization", value).apply()
 
         val appToken: String = BuildConfig.API_KEY

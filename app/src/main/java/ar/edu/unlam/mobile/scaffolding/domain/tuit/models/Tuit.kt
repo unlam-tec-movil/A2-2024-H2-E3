@@ -8,7 +8,7 @@ data class Tuit(
     @SerializedName("message") val content: String,
     @SerializedName("avatar_url") val avatar: String,
     @SerializedName("likes") var likes: Int,
-    @SerializedName("liked") val liked: Boolean,
+    @SerializedName("liked") var liked: Boolean,
     var replies: Int,
     @SerializedName("date") val date: String,
     val reply: (id: Int) -> Unit,

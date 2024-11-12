@@ -42,5 +42,5 @@ interface ApiService {
     @DELETE("/api/v1/me/tuits/{tuit_id}/likes")
     suspend fun deleteLike(
         @Path("tuit_id") tuitId: Int,
-    ): Response<Unit>
+    )
 }
