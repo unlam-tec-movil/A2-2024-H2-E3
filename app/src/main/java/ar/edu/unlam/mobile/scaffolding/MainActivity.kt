@@ -92,7 +92,7 @@ fun MainScreen() {
         NavHost(
             navController = navController,
             //startDestination = NavigationRoutes.LoginScreen.route,
-            startDestination = NavigationRoutes.HomeScreen.route,
+            startDestination = NavigationRoutes.LoginScreen.route,
         ) {
             composable(NavigationRoutes.LoginScreen.route) {
                 LoginScreen(

@@ -35,7 +35,7 @@ android {
         buildConfigField(
             "String",
             "API_KEY",
-            "\"${properties.getProperty("Application-Token", "823fc425e5efbbfc60a32c7c5882667527857d7cfa2d4b7cc095c652e12376e4")}\"",
+            "\"${properties.getProperty("API_KEY", "")}\"",
         )
     }
 
