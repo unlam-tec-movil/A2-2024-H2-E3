@@ -98,7 +98,6 @@ fun MainScreen() {
                     modifier = Modifier.padding(paddingValue),
                 )
             }
-
             composable(NavigationRoutes.HomeScreen.route) {
                 HomeScreen(
                     modifier = Modifier.padding(paddingValue),
