@@ -1,12 +1,15 @@
 package ar.edu.unlam.mobile.scaffolding.domain.tuit.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Tuit(
-    val id: Int,
-    val authorName: String,
-    val content: String,
-    val avatar: String,
-    var likes: Int,
-    val liked: Boolean,
+    @SerializedName("id") val id: Int,
+    @SerializedName("author") val authorName: String,
+    @SerializedName("message") val content: String,
+    @SerializedName("avatar_url") val avatar: String,
+    @SerializedName("likes") var likes: Int,
+    @SerializedName("liked") var liked: Boolean,
     var replies: Int,
-    val reply: (id: Int) -> Unit,
+    @SerializedName("date") val date: String,
+    val reply: String? = null,
 )

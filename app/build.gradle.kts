@@ -1,3 +1,7 @@
+import java.io.File
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -23,6 +27,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val properties = Properties()
+        val localProperties = File(rootProject.rootDir, "local.properties")
+        if (localProperties.exists()) {
+            properties.load(FileInputStream(localProperties))
+        }
+        buildConfigField(
+            "String",
+            "API_KEY",
+            "\"${properties.getProperty("API_KEY", "")}\"",
+        )
     }
 
     buildTypes {
@@ -43,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {
@@ -65,6 +80,9 @@ dependencies {
 
     implementation(libs.io.coil.kt)
 
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.gsonConverter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

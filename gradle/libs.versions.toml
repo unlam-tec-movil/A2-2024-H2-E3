@@ -1,5 +1,5 @@
 [versions]
-agp = "8.1.1"
+agp = "8.6.0"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -14,6 +14,8 @@ ksp = "2.0.20-1.0.24"
 androidXHilt = "1.2.0"
 kover = "0.7.6"
 ktlint = "12.1.0"
+retrofit = "2.9.0"
+playServicesBasement = "18.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,10 +35,13 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidXHilt" }
 
 io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gsonConverter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
 google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 google-dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
 google-dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger" }
+play-services-basement = { group = "com.google.android.gms", name = "play-services-basement", version.ref = "playServicesBasement" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
