@@ -19,4 +19,5 @@ class DraftViewModel @Inject constructor(
             draftDao.deleteDraft(draft)
         }
     }
+
 }

@@ -9,7 +9,6 @@ import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
 import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState.TuitUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,40 +25,11 @@ class CreateTuitViewModel
         private val _uiState = MutableStateFlow<TuitUIState>(TuitUIState.Loading)
         val uiState: StateFlow<TuitUIState> get() = _uiState
 
-        private val _drafts = MutableStateFlow<List<TuitEntity>>(emptyList())
-        val drafts: StateFlow<List<TuitEntity>> get() = _drafts
-
-        private val _selectedDraft = MutableStateFlow<TuitEntity?>(null)
-        val selectedDraft: StateFlow<TuitEntity?> get() = _selectedDraft
-
-    init {
-        loadAllDrafts()
-    }
-
-    private fun loadAllDrafts() {
-        viewModelScope.launch {
-            //_drafts.value = tuitDao.getAllDrafts().
-        }
-    }
-
-    fun loadDraftById(draftId: Int) {
-        viewModelScope.launch {
-            _selectedDraft.value = tuitDao.getDraft(draftId)
-        }
-    }
-
     fun saveDraft(content: String) {
         viewModelScope.launch(Dispatchers.IO) {
             tuitDao.saveDraft(TuitEntity(content = content))
         }
     }
-
-    fun deleteDraft(draft: TuitEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            tuitDao.deleteDraft(draft)
-        }
-    }
-
         // Función para crear el tuit
         fun crearTuit(contenido: String) {
             // Cambiar el estado a Loading mientras se crea el tuit

@@ -15,10 +15,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitScreen
@@ -127,11 +129,25 @@ fun MainScreen() {
                     navController = navController,
                 )
             }
-            composable(NavigationRoutes.CreateTuitScreen.route) {
-                CreateTuitScreen(onTuitCreated = { navController.popBackStack() })
+            composable(
+                route = NavigationRoutes.CreateTuitScreen.route,
+                arguments = listOf(
+                    navArgument("draftContent") {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    }
+                )
+            ) { backStackEntry ->
+                val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
+
+                CreateTuitScreen(
+                    initialContent = draftContent,
+                    onTuitCreated = { navController.popBackStack() }
+                )
             }
+
             composable(NavigationRoutes.DraftListScreen.route) {
-                DraftListScreen(onDraftSelected = {navController.popBackStack()})
+                DraftListScreen(onDraftSelected = {navController.popBackStack()}, navController = navController)
             }
         }
     }

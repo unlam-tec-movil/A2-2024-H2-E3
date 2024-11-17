@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.Flow
 
     @Delete
     suspend fun deleteDraft(tuitEntity: TuitEntity)
+
+    @Query("SELECT * FROM TuitEntity WHERE id = :id LIMIT 1")
+    suspend fun getDraftById(id: Int): TuitEntity?
+
 }
 
 
