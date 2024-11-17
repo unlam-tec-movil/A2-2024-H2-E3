@@ -3,6 +3,7 @@ package ar.edu.unlam.mobile.scaffolding.ui.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -58,6 +59,24 @@ fun BottomBar(controller: NavHostController) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Profile",
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            },
+        )
+        NavigationBarItem(
+            selected = currentDestination?.hierarchy?.any { it.route == NavigationRoutes.DraftListScreen.route } == true,
+            onClick = {
+                if (currentDestination?.route != NavigationRoutes.DraftListScreen.route) {
+                    controller.navigate(NavigationRoutes.DraftListScreen.route) {
+                        popUpTo(NavigationRoutes.HomeScreen.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Draft",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },

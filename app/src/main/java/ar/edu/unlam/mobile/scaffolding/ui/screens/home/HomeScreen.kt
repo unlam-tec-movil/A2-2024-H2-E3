@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
 @Composable
 fun HomeScreen(
@@ -35,7 +36,7 @@ fun HomeScreen(
                 FloatingActionButton(
                     onClick = {
 //                    TODO agregar funcionalidad de navigacion en MainActivity
-//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
+                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
                     },
                     modifier =
                         Modifier

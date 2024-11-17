@@ -21,6 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.draft_list.DraftListScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.profile.ProfileScreen
@@ -57,7 +59,8 @@ fun MainScreen() {
         // Mostrar `BottomBar` solo si el destino actual es `HomeScreen`
         bottomBar = {
             if (currentDestination?.route == NavigationRoutes.HomeScreen.route ||
-                currentDestination?.route == NavigationRoutes.ProfileScreen.route
+                currentDestination?.route == NavigationRoutes.ProfileScreen.route ||
+                currentDestination?.route == NavigationRoutes.DraftListScreen.route
             ) {
                 BottomBar(controller = navController)
             }
@@ -124,6 +127,12 @@ fun MainScreen() {
                     },
                     navController = navController,
                 )
+            }
+            composable(NavigationRoutes.CreateTuitScreen.route) {
+                CreateTuitScreen(onTuitCreated = { navController.popBackStack() })
+            }
+            composable(NavigationRoutes.DraftListScreen.route) {
+                DraftListScreen(onDraftSelected = {navController.popBackStack()})
             }
         }
     }

@@ -1,7 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.local
 
 import android.content.Context
-import ar.edu.unlam.mobile.scaffolding.BuildConfig
 import javax.inject.Inject
 
 class TokenManager
@@ -16,5 +15,5 @@ class TokenManager
                 preferences.getString("Authorization", "")
             set(value) = preferences.edit().putString("Authorization", value).apply()
 
-        val appToken: String = BuildConfig.API_KEY
+        val appToken: String = ar.edu.unlam.mobile.scaffolding.BuildConfig.API_KEY
     }

@@ -60,16 +60,12 @@ class HomeViewModel
         fun likeTuit(tuit: Tuit) {
             viewModelScope.launch {
                 try {
-                    if (tuit.id != null) {
-                        if (tuit.liked) {
-                            deletelikeTuitUseCase(tuit)
-                        } else {
-                            likeTuitUseCase(tuit)
-                        }
-                        tuit.liked = !tuit.liked
+                    if (tuit.liked) {
+                        deletelikeTuitUseCase(tuit)
                     } else {
-                        Log.e("HomeViewModel", "El ID es nulo.")
+                        likeTuitUseCase(tuit)
                     }
+                    tuit.liked = !tuit.liked
                 } catch (e: HttpException) {
                     Log.e("HomeViewModel", "Error en la solicitud: ${e.message}")
                 } catch (e: Exception) {
