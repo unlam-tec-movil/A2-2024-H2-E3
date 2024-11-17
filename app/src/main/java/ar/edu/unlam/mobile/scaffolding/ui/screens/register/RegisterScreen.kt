@@ -31,7 +31,7 @@ fun RegisterScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.UserUiState.collectLatest { event ->
+        viewModel.userUiState.collectLatest { event ->
             when (event) {
                 is UserUiEvent.NavigateToHomeScreen -> onNavigateToHomeScreen()
                 is UserUiEvent.ShowError -> snackBarHostState.showSnackbar(event.message)

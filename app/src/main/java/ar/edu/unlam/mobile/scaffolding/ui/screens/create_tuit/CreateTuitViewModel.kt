@@ -11,45 +11,44 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class CreateTuitViewModel
-    @Inject
-    constructor(
-        private val tuitRepository: TuitRepository,
-    ) : ViewModel() {
-        // Creamos un StateFlow para manejar el estado de la UI
-        private val _uiState = MutableStateFlow<TuitUIState>(TuitUIState.Loading)
-        val uiState: StateFlow<TuitUIState> get() = _uiState
+class CreateTuitViewModel @Inject constructor(
+    private val tuitRepository: TuitRepository
+) : ViewModel() {
 
-        // Función para crear el tuit
-        fun crearTuit(contenido: String) {
-            // Cambiar el estado a Loading mientras se crea el tuit
-            _uiState.value = TuitUIState.Loading
+    // Creamos un StateFlow para manejar el estado de la UI
+    private val _uiState = MutableStateFlow<TuitUIState>(TuitUIState.Loading)
+    val uiState: StateFlow<TuitUIState> get() = _uiState
 
-            viewModelScope.launch {
-                try {
-                    // Crea un nuevo tuit con los datos proporcionados
-                    val newTuit =
-                        Tuit(
-                            id = 0, // O el ID adecuado si lo generas dinámicamente
-                            authorName = "Nombre del Autor", // Personaliza según sea necesario
-                            content = contenido,
-                            avatar = "URL del Avatar",
-                            likes = 0,
-                            liked = false,
-                            replies = 0,
-                            reply = { /* Acción vacía o predeterminada */ },
-                        )
+    // Función para crear el tuit
+    fun crearTuit(contenido: String) {
+        // Cambiar el estado a Loading mientras se crea el tuit
+        _uiState.value = TuitUIState.Loading
 
-                    // Llama al repositorio para guardar el nuevo tuit
-                    tuitRepository.createTuit(newTuit)
+        viewModelScope.launch {
+            try {
+                // Crea un nuevo tuit con los datos proporcionados
+                val newTuit = Tuit(
+                    id = 0, // O el ID adecuado si lo generas dinámicamente
+                    authorName = "Nombre del Autor", // Personaliza según sea necesario
+                    content = contenido,
+                    avatar = "URL del Avatar",
+                    likes = 0,
+                    liked = false,
+                    replies = 0,
+                    reply = { /* Acción vacía o predeterminada */ }
+                )
 
-                    // Si todo fue bien, emitimos un estado de éxito
-                    _uiState.value = TuitUIState.Success("Tuit publicado exitosamente")
-                } catch (e: Exception) {
-                    // Si hay un error, emitimos un estado de error
-                    _uiState.value = TuitUIState.Error("Error al publicar el tuit: ${e.message}")
-                }
+                // Llama al repositorio para guardar el nuevo tuit
+                tuitRepository.createTuit(newTuit)
+
+                // Si todo fue bien, emitimos un estado de éxito
+                _uiState.value = TuitUIState.Success("Tuit publicado exitosamente")
+            } catch (e: Exception) {
+                // Si hay un error, emitimos un estado de error
+                _uiState.value = TuitUIState.Error("Error al publicar el tuit: ${e.message}")
             }
         }
     }
+}

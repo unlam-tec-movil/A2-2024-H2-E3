@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 
 @Composable
 fun EmailTextField(
@@ -21,7 +22,7 @@ fun EmailTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(text = label) },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         isError = isError,
         )
@@ -40,7 +41,7 @@ fun UsernameTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         isError = isError,
     )
@@ -59,8 +60,9 @@ fun PasswordTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = PasswordVisualTransformation(),
         isError = isError,
     )
 }
@@ -78,8 +80,9 @@ fun ConfirmPasswordTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = PasswordVisualTransformation(),
         isError = isError,
     )
 }

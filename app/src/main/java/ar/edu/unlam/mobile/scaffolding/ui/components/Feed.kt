@@ -10,20 +10,26 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
+import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeViewModel
 
 @Composable
 fun Feed(
     tuits: List<Tuit>,
     modifier: Modifier,
+    viewModel: HomeViewModel,
 ) {
     LazyColumn(
         modifier =
-            modifier
-                .fillMaxSize()
-                .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
+        modifier
+            .fillMaxSize()
+            .padding(
+                bottom = WindowInsets.navigationBars
+                    .asPaddingValues()
+                    .calculateBottomPadding()
+            ),
     ) {
         items(tuits) { tuit ->
-            TuitCard(tuit = tuit)
+            TuitCard(tuit = tuit, viewModel)
         }
     }
 }

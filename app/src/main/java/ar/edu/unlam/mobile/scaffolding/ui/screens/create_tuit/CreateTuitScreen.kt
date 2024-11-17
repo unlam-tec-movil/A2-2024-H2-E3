@@ -11,16 +11,17 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState.ErrorScree
 @Composable
 fun CreateTuitScreen(
     viewModel: CreateTuitViewModel = hiltViewModel(),
-    onTuitCreated: () -> Unit
-// Función para hacer algo después de publicar el tuit
+    onTuitCreated: () -> Unit // Función para hacer algo después de publicar el tuit
 ) {
     // Aquí se observa el estado del ViewModel
     val uiState = viewModel.uiState.collectAsState().value
 
+    // Crear formulario de tuit
     TuitForm { tuitContent ->
         // Llamar a la función que crea el tuit
         viewModel.crearTuit(tuitContent)
     }
+
     // Manejo del estado
     when (uiState) {
         is TuitUIState.Loading -> {
