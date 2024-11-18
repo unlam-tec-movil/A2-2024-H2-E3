@@ -16,10 +16,14 @@ fun CreateTuitScreen(
     // Aquí se observa el estado del ViewModel
     val uiState = viewModel.uiState.collectAsState().value
 
+    // Aquí puedes obtener el nombre del autor y el avatar, esto dependerá de tu lógica de usuario
+    val authorName = "Nombre del Autor" // Esto puede provenir de un modelo de usuario autenticado
+    val avatarUrl = "URL del Avatar" // Esto también puede ser dinámico según el usuario
+
     // Crear formulario de tuit
     TuitForm { tuitContent ->
-        // Llamar a la función que crea el tuit
-        viewModel.crearTuit(tuitContent)
+        // Llamar a la función que crea el tuit, pasando todos los parámetros requeridos
+        viewModel.crearTuit(tuitContent, authorName, avatarUrl)
     }
 
     // Manejo del estado

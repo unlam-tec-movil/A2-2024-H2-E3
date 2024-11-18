@@ -81,8 +81,9 @@ dependencies {
     implementation(libs.io.coil.kt)
 
     // retrofit
-    implementation(libs.retrofit)
-    implementation(libs.gsonConverter)
+    implementation(libs.squareup.retrofit2)
+    implementation(libs.squareup.retrofit2.gson.converter)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

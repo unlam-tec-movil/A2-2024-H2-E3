@@ -25,12 +25,16 @@ fun TuitForm(
             value = tuitContent.value,
             onValueChange = { tuitContent.value = it },
             label = { Text("Escribe tu tuit") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true // Esto limita la entrada a una sola línea
         )
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Deshabilitar el botón si el tuit está vacío o solo tiene espacios
         Button(
             onClick = { onSubmit(tuitContent.value) },
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier.align(Alignment.End),
+            enabled = tuitContent.value.isNotBlank() // Habilitar solo si no está vacío
         ) {
             Text("Publicar Tuit")
         }
