@@ -9,8 +9,11 @@ import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
 import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState.TuitUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +23,8 @@ class CreateTuitViewModel
     private val tuitRepository: TuitRepository, private val tuitDao: TuitDao
 ) : ViewModel() {
     // Creamos un StateFlow para manejar el estado de la UI
-    private val _uiState = MutableStateFlow<TuitUIState>(TuitUIState.Loading)
-    val uiState: StateFlow<TuitUIState> get() = _uiState
+    private val _uiState = MutableSharedFlow<TuitUIState>()
+    val uiState: SharedFlow<TuitUIState> = _uiState.asSharedFlow()
 
     fun saveDraft(content: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,9 +35,9 @@ class CreateTuitViewModel
     // Función para crear el tuit
     fun crearTuit(contenido: String) {
         // Cambiar el estado a Loading mientras se crea el tuit
-        _uiState.value = TuitUIState.Loading
 
         viewModelScope.launch {
+            _uiState.emit(TuitUIState.Loading)
             try {
                 // Crea un nuevo tuit con los datos proporcionados
                 val newTuit = Tuit(
@@ -53,10 +56,10 @@ class CreateTuitViewModel
                 tuitRepository.createTuit(newTuit)
 
                 // Si fue bien, emitimos un estado de éxito
-                _uiState.value = TuitUIState.Success("Tuit publicado exitosamente")
+                _uiState.emit(TuitUIState.Success("Tuit publicado exitosamente"))
             } catch (e: Exception) {
                 // Si hay un error, emitimos un estado de error
-                _uiState.value = TuitUIState.Error("Error al publicar el tuit: ${e.message}")
+                _uiState.emit(TuitUIState.Error("Error al publicar el tuit: ${e.message}"))
             }
         }
     }

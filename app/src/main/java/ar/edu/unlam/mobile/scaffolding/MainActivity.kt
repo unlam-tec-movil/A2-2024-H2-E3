@@ -134,7 +134,8 @@ fun MainScreen() {
                 val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
 
                 CreateTuitScreen(initialContent = draftContent,
-                    onTuitCreated = { navController.popBackStack() })
+                    onTuitCreated = { navController.popBackStack() },
+                    snackBarHostState = snackbarHostState)
             }
 
             composable(NavigationRoutes.DraftListScreen.route) {
