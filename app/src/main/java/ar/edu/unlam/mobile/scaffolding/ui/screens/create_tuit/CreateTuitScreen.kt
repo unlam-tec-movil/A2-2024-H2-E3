@@ -1,5 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit
 
+import android.util.Log
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +37,7 @@ fun CreateTuitScreen(
                 is TuitUIState.Error -> {
                     // Mostrar mensaje de error si la creación del tuit falla
                     // Aquí podrías usar un Snackbar, Toast o mostrar un mensaje de error
-                    snackBarHostState.showSnackbar(uiState.error)
+                    snackBarHostState.showSnackbar(uiState.error, duration = SnackbarDuration.Short)
                 }
 
                 else -> Unit
@@ -49,7 +51,6 @@ fun CreateTuitScreen(
         onSubmit = { content ->
             if (content.isNotBlank()) {
                 viewModel.crearTuit(content)
-                onTuitCreated()
             }
         },
         onSaveDraft = { content ->

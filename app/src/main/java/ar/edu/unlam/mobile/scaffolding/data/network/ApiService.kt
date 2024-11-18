@@ -31,8 +31,8 @@ interface ApiService {
 
     @POST("/api/v1/me/tuits")
     suspend fun createTuit(
-        @Body tuit: Tuit,
-    ): Response<Tuit>
+        @Body request: Tuit,
+    ): Response<Unit>
 
     @POST("/api/v1/me/tuits/{tuit_id}/likes")
     suspend fun addLike(
