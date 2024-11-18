@@ -10,9 +10,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.UiState.TuitUIStat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,9 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateTuitViewModel
 @Inject constructor(
-    private val tuitRepository: TuitRepository, private val tuitDao: TuitDao
+    private val tuitRepository: TuitRepository,
+    private val tuitDao: TuitDao
 ) : ViewModel() {
-    // Creamos un StateFlow para manejar el estado de la UI
     private val _uiState = MutableSharedFlow<TuitUIState>()
     val uiState: SharedFlow<TuitUIState> = _uiState.asSharedFlow()
 
@@ -51,7 +49,6 @@ class CreateTuitViewModel
                     date = "",
                     reply = "",
                 )
-
                 // Llama al repositorio para guardar el nuevo tuit
                 tuitRepository.createTuit(newTuit)
 
