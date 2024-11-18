@@ -84,7 +84,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gsonConverter)
 
-    //room
+    // room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.storage)
