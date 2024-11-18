@@ -28,9 +28,7 @@ class RegisterViewModel @Inject constructor(
     val registrationState: State<RegistrationState> = _registrationState
 
     private val _userUiState = MutableSharedFlow<UserUiEvent>(
-        replay = 1,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        replay = 1, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val userUiState: SharedFlow<UserUiEvent> = _userUiState.asSharedFlow()
 

@@ -22,8 +22,7 @@ fun CreateTuitScreen(
 
 
     // Crear formulario de tuit
-    TuitForm (
-        initialContent = tuitContent.value,
+    TuitForm(initialContent = tuitContent.value,
         onContentChange = { tuitContent.value = it },
         onSubmit = { content ->
             if (content.isNotBlank()) {
@@ -33,9 +32,7 @@ fun CreateTuitScreen(
         },
         onSaveDraft = { content ->
             viewModel.saveDraft(content)
-        }
-    )
-
+        })
 
     // Manejo del estado
     when (uiState) {
@@ -43,10 +40,12 @@ fun CreateTuitScreen(
             // Mostrar pantalla de carga
             LoadingScreen()
         }
+
         is TuitUIState.Success -> {
             // Acción cuando el tuit fue publicado correctamente
             onTuitCreated() // Regresa a la pantalla de inicio tras publicar
         }
+
         is TuitUIState.Error -> {
             // Mostrar mensaje de error si la creación del tuit falla
             // Aquí podrías usar un Snackbar, Toast o mostrar un mensaje de error

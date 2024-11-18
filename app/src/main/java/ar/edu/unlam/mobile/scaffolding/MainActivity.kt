@@ -60,10 +60,7 @@ fun MainScreen() {
     Scaffold(
         // Mostrar `BottomBar` solo si el destino actual es `HomeScreen`
         bottomBar = {
-            if (currentDestination?.route == NavigationRoutes.HomeScreen.route ||
-                currentDestination?.route == NavigationRoutes.ProfileScreen.route ||
-                currentDestination?.route == NavigationRoutes.DraftListScreen.route
-            ) {
+            if (currentDestination?.route == NavigationRoutes.HomeScreen.route || currentDestination?.route == NavigationRoutes.ProfileScreen.route || currentDestination?.route == NavigationRoutes.DraftListScreen.route) {
                 BottomBar(controller = navController)
             }
         },
@@ -129,25 +126,22 @@ fun MainScreen() {
                     navController = navController,
                 )
             }
-            composable(
-                route = NavigationRoutes.CreateTuitScreen.route,
-                arguments = listOf(
-                    navArgument("draftContent") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    }
-                )
-            ) { backStackEntry ->
+            composable(route = NavigationRoutes.CreateTuitScreen.route,
+                arguments = listOf(navArgument("draftContent") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                })) { backStackEntry ->
                 val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
 
-                CreateTuitScreen(
-                    initialContent = draftContent,
-                    onTuitCreated = { navController.popBackStack() }
-                )
+                CreateTuitScreen(initialContent = draftContent,
+                    onTuitCreated = { navController.popBackStack() })
             }
 
             composable(NavigationRoutes.DraftListScreen.route) {
-                DraftListScreen(onDraftSelected = {navController.popBackStack()}, navController = navController)
+                DraftListScreen(
+                    onDraftSelected = { navController.popBackStack() },
+                    navController = navController
+                )
             }
         }
     }
