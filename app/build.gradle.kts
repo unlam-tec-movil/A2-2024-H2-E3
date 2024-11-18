@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "ar.edu.unlam.mobile.scaffolding"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "ar.edu.unlam.mobile.scaffolding"
@@ -83,6 +83,12 @@ dependencies {
     // retrofit
     implementation(libs.retrofit)
     implementation(libs.gsonConverter)
+
+    //room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.androidx.storage)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

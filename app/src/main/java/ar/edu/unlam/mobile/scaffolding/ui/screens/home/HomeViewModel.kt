@@ -36,58 +36,51 @@ data class TuitUIState(
 
 @HiltViewModel
 class HomeViewModel
-    @Inject
-    constructor(
-        tuitRepository: TuitRepository,
-        private val likeTuitUseCase: LikeTuitUseCase,
-        private val deletelikeTuitUseCase: DeletelikeTuitUseCase,
-    ) : ViewModel() {
-        // Mutable State Flow contiene un objeto de estado mutable. Simplifica la operación de
-        // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
-        // (https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
-        // _helloMessage State es el estado del componente "HelloMessage" inicializado como "Cargando"
-        // private val helloMessageState = MutableStateFlow(FeedUIState.Loading)
+@Inject constructor(
+    tuitRepository: TuitRepository,
+    private val likeTuitUseCase: LikeTuitUseCase,
+    private val deletelikeTuitUseCase: DeletelikeTuitUseCase,
+) : ViewModel() {
+    // Mutable State Flow contiene un objeto de estado mutable. Simplifica la operación de
+    // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
+    // (https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
+    // _helloMessage State es el estado del componente "HelloMessage" inicializado como "Cargando"
+    // private val helloMessageState = MutableStateFlow(FeedUIState.Loading)
 
-        // _Ui State es el estado general del view model.
-        // private val _uiState = MutableStateFlow(TuitUIState(helloMessageState.value))
+    // _Ui State es el estado general del view model.
+    // private val _uiState = MutableStateFlow(TuitUIState(helloMessageState.value))
 
-        private val _uiState = MutableStateFlow(TuitUIState(FeedUIState.Loading))
-        val uiState: StateFlow<TuitUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(TuitUIState(FeedUIState.Loading))
+    val uiState: StateFlow<TuitUIState> = _uiState.asStateFlow()
 
-        // UIState expone el estado anterior como un Flujo de Estado de solo lectura.
-        // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
-        // val uiState = _uiState.asStateFlow()
-        fun likeTuit(tuit: Tuit) {
-            viewModelScope.launch {
-                try {
-                    if (tuit.id != null) {
-                        if (tuit.liked) {
-                            deletelikeTuitUseCase(tuit)
-                        } else {
-                            likeTuitUseCase(tuit)
-                        }
-                        tuit.liked = !tuit.liked
-                    } else {
-                        Log.e("HomeViewModel", "El ID es nulo.")
-                    }
-                } catch (e: HttpException) {
-                    Log.e("HomeViewModel", "Error en la solicitud: ${e.message}")
-                } catch (e: Exception) {
-                    Log.e("HomeViewModel", "Error inesperado: ${e.localizedMessage}")
+    // UIState expone el estado anterior como un Flujo de Estado de solo lectura.
+    // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
+    // val uiState = _uiState.asStateFlow()
+    fun likeTuit(tuit: Tuit) {
+        viewModelScope.launch {
+            try {
+                if (tuit.liked) {
+                    deletelikeTuitUseCase(tuit)
+                } else {
+                    likeTuitUseCase(tuit)
                 }
-            }
-        }
-
-        init {
-            viewModelScope.launch {
-                tuitRepository
-                    .getTuits()
-                    .catch { exception ->
-                        Log.e("HomeViewModel", "Error fetching tuits", exception)
-                        _uiState.value = TuitUIState(FeedUIState.Error("Error"))
-                    }.collect { tuits ->
-                        _uiState.value = TuitUIState(FeedUIState.Success(tuits))
-                    }
+                tuit.liked = !tuit.liked
+            } catch (e: HttpException) {
+                Log.e("HomeViewModel", "Error en la solicitud: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error inesperado: ${e.localizedMessage}")
             }
         }
     }
+
+    init {
+        viewModelScope.launch {
+            tuitRepository.getTuits().catch { exception ->
+                    Log.e("HomeViewModel", "Error fetching tuits", exception)
+                    _uiState.value = TuitUIState(FeedUIState.Error("Error"))
+                }.collect { tuits ->
+                    _uiState.value = TuitUIState(FeedUIState.Success(tuits))
+                }
+        }
+    }
+}

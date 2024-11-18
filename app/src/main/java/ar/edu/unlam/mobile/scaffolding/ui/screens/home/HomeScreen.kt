@@ -1,4 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens.home
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -18,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
 
 @Composable
 fun HomeScreen(
@@ -34,14 +36,12 @@ fun HomeScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 FloatingActionButton(
                     onClick = {
-//                    TODO agregar funcionalidad de navigacion en MainActivity
-//                    navController.navigate(NavigationRoutes.CreateTuitScreen.route)
+                        navController.navigate(NavigationRoutes.CreateTuitScreen.route)
                     },
-                    modifier =
-                        Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                            .offset(y = (-60).dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                        .offset(y = (-60).dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -56,9 +56,11 @@ fun HomeScreen(
             is FeedUIState.Loading -> {
                 LoadingScreen()
             }
+
             is FeedUIState.Success -> {
                 Feed(tuits = tuitState.tuits, modifier = modifier.padding(paddingValues), viewModel)
             }
+
             is FeedUIState.Error -> {
                 LaunchedEffect(snackbarHostState) {
                     snackbarHostState.showSnackbar(

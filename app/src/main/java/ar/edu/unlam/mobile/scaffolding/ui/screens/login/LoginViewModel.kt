@@ -73,7 +73,7 @@ class LoginViewModel @Inject constructor(
                             )
                             emitUserEvent(event = UserUiEvent.NavigateToHomeScreen)
                         } catch (e: Exception) {
-                            emitUserEvent(event = UserUiEvent.ShowError("Error: Email o contraseña incorrecto"))
+                            emitUserEvent(event = UserUiEvent.ShowError("${e.message} Error: Email o contraseña incorrecto"))
                         }
                     } else {
                         emitUserEvent(event = UserUiEvent.ShowError("Por favor complete los campos vacios"))

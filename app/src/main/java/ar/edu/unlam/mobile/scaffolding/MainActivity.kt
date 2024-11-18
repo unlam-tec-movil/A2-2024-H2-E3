@@ -15,12 +15,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.draft_list.DraftListScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.home.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.login.LoginScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.profile.ProfileScreen
@@ -56,9 +60,7 @@ fun MainScreen() {
     Scaffold(
         // Mostrar `BottomBar` solo si el destino actual es `HomeScreen`
         bottomBar = {
-            if (currentDestination?.route == NavigationRoutes.HomeScreen.route ||
-                currentDestination?.route == NavigationRoutes.ProfileScreen.route
-            ) {
+            if (currentDestination?.route == NavigationRoutes.HomeScreen.route || currentDestination?.route == NavigationRoutes.ProfileScreen.route || currentDestination?.route == NavigationRoutes.DraftListScreen.route) {
                 BottomBar(controller = navController)
             }
         },
@@ -95,7 +97,6 @@ fun MainScreen() {
                     modifier = Modifier.padding(paddingValue),
                 )
             }
-
             composable(NavigationRoutes.HomeScreen.route) {
                 HomeScreen(
                     modifier = Modifier.padding(paddingValue),
@@ -123,6 +124,24 @@ fun MainScreen() {
                         }
                     },
                     navController = navController,
+                )
+            }
+            composable(route = NavigationRoutes.CreateTuitScreen.route,
+                arguments = listOf(navArgument("draftContent") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                })) { backStackEntry ->
+                val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
+
+                CreateTuitScreen(initialContent = draftContent,
+                    onTuitCreated = { navController.popBackStack() },
+                    snackBarHostState = snackbarHostState)
+            }
+
+            composable(NavigationRoutes.DraftListScreen.route) {
+                DraftListScreen(
+                    onDraftSelected = { navController.popBackStack() },
+                    navController = navController
                 )
             }
         }

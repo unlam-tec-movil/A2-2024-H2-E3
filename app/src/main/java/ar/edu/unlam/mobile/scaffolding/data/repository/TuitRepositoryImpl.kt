@@ -13,21 +13,31 @@ import kotlinx.coroutines.flow.flowOn
 class TuitRepositoryImpl(
     private val apiService: ApiService,
 ) : TuitRepository {
-    override suspend fun getTuits(): Flow<List<Tuit>> =
-        flow {
-            val response = apiService.getFeed()
-            emit(response)
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getTuits(): Flow<List<Tuit>> = flow {
+        val response = apiService.getFeed()
+        emit(response)
+    }.flowOn(Dispatchers.IO)
 
-    override suspend fun createTuit(tuit: Tuit) {
-        TODO("Not yet implemented")
+    override suspend fun createTuit(newTuit: Tuit) {
+        try {
+            val response = apiService.createTuit(newTuit)
+            Log.d("TuitRepository", "Response: $response")
+            if (!response.isSuccessful) {
+                throw Exception(response.code().toString())
+            }
+        } catch (e: HttpException) {
+            Log.e("TuitRepository", "Error en la API al crear tuit: ${e.message}")
+            throw e
+        } catch (e: Exception) {
+            Log.e("TuitRepository", "Error inesperado al crear tuit: ${e.message}")
+            throw e
+        }
     }
 
     override suspend fun addLike(tuitId: Int) {
         try {
             apiService.addLike(tuitId)
         } catch (e: HttpException) {
-            Log.e("TuitRepository", "Error addLike: ${e.message}")
             throw e
         }
     }
@@ -36,7 +46,6 @@ class TuitRepositoryImpl(
         try {
             apiService.deleteLike(tuitId)
         } catch (e: HttpException) {
-            Log.e("TuitRepository", "Error deleteLike: ${e.message}")
             throw e
         }
     }
