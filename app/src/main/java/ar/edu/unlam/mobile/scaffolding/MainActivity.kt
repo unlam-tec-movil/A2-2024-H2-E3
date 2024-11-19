@@ -58,9 +58,10 @@ fun MainScreen() {
     val currentDestination = navBackStackEntry?.destination
 
     Scaffold(
-        // Mostrar `BottomBar` solo si el destino actual es `HomeScreen`
+        // Mostrar `BottomBar` solo fuera del login
         bottomBar = {
-            if (currentDestination?.route == NavigationRoutes.HomeScreen.route || currentDestination?.route == NavigationRoutes.ProfileScreen.route || currentDestination?.route == NavigationRoutes.DraftListScreen.route) {
+            if (currentDestination?.route != NavigationRoutes.LoginScreen.route &&
+                currentDestination?.route != NavigationRoutes.RegisterScreen.route){
                 BottomBar(controller = navController)
             }
         },
