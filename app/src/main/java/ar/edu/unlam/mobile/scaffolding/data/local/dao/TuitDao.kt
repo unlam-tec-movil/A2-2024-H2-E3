@@ -8,7 +8,6 @@ import androidx.room.Query
 import ar.edu.unlam.mobile.scaffolding.data.local.entities.TuitEntity
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao interface TuitDao {
     @Query("SELECT * FROM TuitEntity")
     fun getAllDrafts(): Flow<List<TuitEntity>>
@@ -21,10 +20,4 @@ import kotlinx.coroutines.flow.Flow
 
     @Delete
     suspend fun deleteDraft(tuitEntity: TuitEntity)
-
-    @Query("SELECT * FROM TuitEntity WHERE id = :id LIMIT 1")
-    suspend fun getDraftById(id: Int): TuitEntity?
-
 }
-
-
