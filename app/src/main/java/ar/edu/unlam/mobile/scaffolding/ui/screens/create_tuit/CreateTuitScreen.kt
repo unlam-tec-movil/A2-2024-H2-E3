@@ -32,6 +32,7 @@ fun CreateTuitScreen(
                 is TuitUIState.Success -> {
                     // Acción cuando el tuit fue publicado correctamente
                     onTuitCreated() // Regresa a la pantalla de inicio tras publicar
+                    snackBarHostState.showSnackbar(uiState.message, duration = SnackbarDuration.Short)
                 }
 
                 is TuitUIState.Error -> {
@@ -54,6 +55,7 @@ fun CreateTuitScreen(
             }
         },
         onSaveDraft = { content ->
+            if(content.isNotBlank())
             viewModel.saveDraft(content)
         })
 }
