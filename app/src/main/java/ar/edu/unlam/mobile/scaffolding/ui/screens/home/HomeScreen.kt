@@ -20,13 +20,11 @@ import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
-import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    createTuitViewModel: CreateTuitViewModel = hiltViewModel(),
     onError: @Composable (message: String) -> Unit = {},
     navController: NavHostController,
 ) {
@@ -34,7 +32,7 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        viewModel.observeRefreshFlow(createTuitViewModel.refreshFeed)
+        viewModel.fetchTuits()
     }
 
     Scaffold(

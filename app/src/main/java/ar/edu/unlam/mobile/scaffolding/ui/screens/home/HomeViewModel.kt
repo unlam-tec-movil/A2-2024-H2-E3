@@ -9,7 +9,6 @@ import ar.edu.unlam.mobile.scaffolding.domain.tuit.services.TuitService
 import coil.network.HttpException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -69,7 +68,7 @@ class HomeViewModel
             fetchTuits()
         }
 
-        private fun fetchTuits() {
+        fun fetchTuits() {
             viewModelScope.launch {
                 try {
                     val tuits = tuitService.fetchTuits()
@@ -80,27 +79,4 @@ class HomeViewModel
                 }
             }
         }
-
-        fun observeRefreshFlow(refreshFlow: SharedFlow<Unit>) {
-            viewModelScope.launch {
-                refreshFlow.collect {
-                    fetchTuits()
-                }
-            }
-        }
-/*
-        init {
-            viewModelScope.launch {
-                tuitRepository
-                    .getTuits()
-                    .catch { exception ->
-                        Log.e("HomeViewModel", "Error fetching tuits", exception)
-                        _uiState.value = TuitUIState(FeedUIState.Error("Error"))
-                    }.collect { tuits ->
-                        _uiState.value = TuitUIState(FeedUIState.Success(tuits))
-                    }
-            }
-        }
-
- */
     }

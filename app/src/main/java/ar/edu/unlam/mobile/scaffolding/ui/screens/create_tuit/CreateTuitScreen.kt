@@ -25,8 +25,9 @@ fun CreateTuitScreen(
             when (uiState) {
                 is TuitUIState.Success -> {
                     // Acción cuando el tuit fue publicado correctamente
-                    onTuitCreated() // Regresa a la pantalla de inicio tras publicar
+                    // onTuitCreated() // Regresa a la pantalla de inicio tras publicar
                     snackBarHostState.showSnackbar(uiState.message, duration = SnackbarDuration.Short)
+                    onTuitCreated()
                 }
 
                 is TuitUIState.Error -> {
