@@ -23,9 +23,13 @@ class CreateTuitViewModel
         private val _uiState = MutableSharedFlow<TuitUIState>()
         val uiState: SharedFlow<TuitUIState> = _uiState.asSharedFlow()
 
+        private val _navigateToHome = MutableSharedFlow<Boolean>()
+        val navigateToHome: SharedFlow<Boolean> = _navigateToHome.asSharedFlow()
+
         fun saveDraft(content: String) {
             viewModelScope.launch(Dispatchers.IO) {
                 tuitRepository.saveDraft(TuitEntity(content = content))
+                _navigateToHome.emit(true) // Emitir el evento para navegar a Home
             }
         }
 
@@ -52,10 +56,13 @@ class CreateTuitViewModel
                     // Llama al repositorio para guardar el nuevo tuit
                     tuitRepository.createTuit(newTuit)
 
-                    // Si fue bien, emitimos un estado de éxito
+                    // Emitir evento de éxito
                     _uiState.emit(TuitUIState.Success("Tuit publicado exitosamente"))
+
+                    // Emitir evento para que la pantalla principal recargue los tuits
+                    _navigateToHome.emit(true)
                 } catch (e: Exception) {
-                    // Si hay un error, emitimos un estado de error
+                    // Emitir error si ocurre un problema
                     _uiState.emit(TuitUIState.Error("Error al publicar el tuit: ${e.message}"))
                 }
             }

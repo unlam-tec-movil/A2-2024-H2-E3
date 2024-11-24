@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.common.UserUiEvent
 import ar.edu.unlam.mobile.scaffolding.ui.components.TuitForm
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
@@ -21,33 +22,49 @@ fun CreateTuitScreen(
     initialContent: String = "",
     viewModel: CreateTuitViewModel = hiltViewModel(),
     onTuitCreated: () -> Unit, // Función para hacer algo después de publicar el tuit
-    snackBarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState,
+    navController: NavHostController // Añade este parámetro para manejar navegación
 ) {
 
     val tuitContent = remember { mutableStateOf(initialContent) }
     // Aquí se observa el estado del ViewModel
     LaunchedEffect(Unit) {
+        // Observa los cambios en el estado de la UI (publicación del tuit o error)
         viewModel.uiState.collectLatest { uiState ->
             when (uiState) {
                 is TuitUIState.Success -> {
                     // Acción cuando el tuit fue publicado correctamente
-                    onTuitCreated() // Regresa a la pantalla de inicio tras publicar
-                    snackBarHostState.showSnackbar(uiState.message, duration = SnackbarDuration.Short)
+                    onTuitCreated() // Ejecuta la acción proporcionada al Composable (como navegar al Home)
+                    snackBarHostState.showSnackbar(
+                        message = uiState.message,
+                        duration = SnackbarDuration.Short
+                    )
                 }
 
                 is TuitUIState.Error -> {
                     // Mostrar mensaje de error si la creación del tuit falla
-                    // Aquí podrías usar un Snackbar, Toast o mostrar un mensaje de error
-                    snackBarHostState.showSnackbar(uiState.error, duration = SnackbarDuration.Short)
+                    snackBarHostState.showSnackbar(
+                        message = uiState.error,
+                        duration = SnackbarDuration.Short
+                    )
                 }
 
-                else -> Unit
+                else -> Unit // No hacer nada en otros casos
+            }
+        }
+
+        // Observa los eventos para navegar de regreso al Home después de guardar el borrador
+        viewModel.navigateToHome.collectLatest { navigate ->
+            if (navigate) {
+                navController.popBackStack() // Regresa a la pantalla anterior (HomeScreen)
+                // Luego, pedir que Home se recargue (esto puede ser un indicador para que HomeViewModel obtenga los tuits)
             }
         }
     }
 
     // Crear formulario de tuit
-    TuitForm(initialContent = tuitContent.value,
+    TuitForm(
+        initialContent = tuitContent.value,
         onContentChange = { tuitContent.value = it },
         onSubmit = { content ->
             if (content.isNotBlank()) {
@@ -55,7 +72,9 @@ fun CreateTuitScreen(
             }
         },
         onSaveDraft = { content ->
-            if(content.isNotBlank())
-            viewModel.saveDraft(content)
-        })
+            if (content.isNotBlank()) {
+                viewModel.saveDraft(content)
+            }
+        }
+    )
 }

@@ -37,7 +37,7 @@ data class TuitUIState(
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
-    tuitRepository: TuitRepository,
+    private val tuitRepository: TuitRepository,
     private val likeTuitUseCase: LikeTuitUseCase,
     private val deletelikeTuitUseCase: DeletelikeTuitUseCase,
 ) : ViewModel() {
@@ -53,9 +53,19 @@ class HomeViewModel
     private val _uiState = MutableStateFlow(TuitUIState(FeedUIState.Loading))
     val uiState: StateFlow<TuitUIState> = _uiState.asStateFlow()
 
+    fun loadTuits() {
+        viewModelScope.launch {
+            tuitRepository.getTuits().catch { exception ->
+                Log.e("HomeViewModel", "Error fetching tuits", exception)
+                _uiState.value = TuitUIState(FeedUIState.Error("Error"))
+            }.collect { tuits ->
+                _uiState.value = TuitUIState(FeedUIState.Success(tuits))
+            }
+        }
+    }
     // UIState expone el estado anterior como un Flujo de Estado de solo lectura.
     // Esto impide que se pueda modificar el estado desde fuera del ViewModel.
-    // val uiState = _uiState.asStateFlow()
+    // val uiState = _uiState.asStateFlow(
     fun likeTuit(tuit: Tuit) {
         viewModelScope.launch {
             try {
