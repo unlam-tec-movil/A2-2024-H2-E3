@@ -61,7 +61,8 @@ fun MainScreen() {
         // Mostrar `BottomBar` solo fuera del login
         bottomBar = {
             if (currentDestination?.route != NavigationRoutes.LoginScreen.route &&
-                currentDestination?.route != NavigationRoutes.RegisterScreen.route){
+                currentDestination?.route != NavigationRoutes.RegisterScreen.route
+            ) {
                 BottomBar(controller = navController)
             }
         },
@@ -127,22 +128,29 @@ fun MainScreen() {
                     navController = navController,
                 )
             }
-            composable(route = NavigationRoutes.CreateTuitScreen.route,
-                arguments = listOf(navArgument("draftContent") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                })) { backStackEntry ->
+            composable(
+                route = NavigationRoutes.CreateTuitScreen.route,
+                arguments =
+                    listOf(
+                        navArgument("draftContent") {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                    ),
+            ) { backStackEntry ->
                 val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
 
-                CreateTuitScreen(initialContent = draftContent,
+                CreateTuitScreen(
+                    initialContent = draftContent,
                     onTuitCreated = { navController.popBackStack() },
-                    snackBarHostState = snackbarHostState)
+                    snackBarHostState = snackbarHostState,
+                )
             }
 
             composable(NavigationRoutes.DraftListScreen.route) {
                 DraftListScreen(
                     onDraftSelected = { navController.popBackStack() },
-                    navController = navController
+                    navController = navController,
                 )
             }
         }

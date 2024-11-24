@@ -20,16 +20,22 @@ import androidx.navigation.NavHostController
 import ar.edu.unlam.mobile.scaffolding.ui.components.Feed
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LoadingScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.NavigationRoutes
+import ar.edu.unlam.mobile.scaffolding.ui.screens.create_tuit.CreateTuitViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    createTuitViewModel: CreateTuitViewModel = hiltViewModel(),
     onError: @Composable (message: String) -> Unit = {},
     navController: NavHostController,
 ) {
     val uiState: TuitUIState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.observeRefreshFlow(createTuitViewModel.refreshFeed)
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -38,10 +44,11 @@ fun HomeScreen(
                     onClick = {
                         navController.navigate(NavigationRoutes.CreateTuitScreen.route)
                     },
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                        .offset(y = (-60).dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                            .offset(y = (-60).dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,

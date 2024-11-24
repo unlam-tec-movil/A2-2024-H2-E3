@@ -23,6 +23,9 @@ class CreateTuitViewModel
         private val _uiState = MutableSharedFlow<TuitUIState>()
         val uiState: SharedFlow<TuitUIState> = _uiState.asSharedFlow()
 
+        private val _refreshFeed = MutableSharedFlow<Unit>()
+        val refreshFeed: SharedFlow<Unit> = _refreshFeed.asSharedFlow()
+
         fun saveDraft(content: String) {
             viewModelScope.launch(Dispatchers.IO) {
                 tuitRepository.saveDraft(TuitEntity(content = content))
@@ -51,9 +54,9 @@ class CreateTuitViewModel
                         )
                     // Llama al repositorio para guardar el nuevo tuit
                     tuitRepository.createTuit(newTuit)
-
                     // Si fue bien, emitimos un estado de éxito
                     _uiState.emit(TuitUIState.Success("Tuit publicado exitosamente"))
+                    _refreshFeed.emit(Unit)
                 } catch (e: Exception) {
                     // Si hay un error, emitimos un estado de error
                     _uiState.emit(TuitUIState.Error("Error al publicar el tuit: ${e.message}"))
