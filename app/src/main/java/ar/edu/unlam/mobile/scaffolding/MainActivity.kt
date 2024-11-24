@@ -127,16 +127,19 @@ fun MainScreen() {
                     navController = navController,
                 )
             }
-            composable(route = NavigationRoutes.CreateTuitScreen.route,
+            composable(NavigationRoutes.CreateTuitScreen.route,
                 arguments = listOf(navArgument("draftContent") {
                     type = NavType.StringType
                     defaultValue = ""
                 })) { backStackEntry ->
                 val draftContent = backStackEntry.arguments?.getString("draftContent") ?: ""
 
-                CreateTuitScreen(initialContent = draftContent,
+                CreateTuitScreen(
+                    initialContent = draftContent,
                     onTuitCreated = { navController.popBackStack() },
-                    snackBarHostState = snackbarHostState)
+                    snackBarHostState = snackbarHostState,  // Aquí pasas el snackbarHostState
+                    navController = navController
+                )
             }
 
             composable(NavigationRoutes.DraftListScreen.route) {
