@@ -5,16 +5,13 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.domain.tuit.models.Tuit
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.repository.TuitRepository
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.usecases.DeletelikeTuitUseCase
-import ar.edu.unlam.mobile.scaffolding.domain.tuit.usecases.LikeTuitUseCase
+import ar.edu.unlam.mobile.scaffolding.domain.tuit.services.TuitService
 import coil.network.HttpException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,9 +36,7 @@ data class TuitUIState(
 class HomeViewModel
     @Inject
     constructor(
-        private val tuitRepository: TuitRepository,
-        private val likeTuitUseCase: LikeTuitUseCase,
-        private val deletelikeTuitUseCase: DeletelikeTuitUseCase,
+        private val tuitService: TuitService,
     ) : ViewModel() {
         // Mutable State Flow contiene un objeto de estado mutable. Simplifica la operación de
         // actualización de información y de manejo de estados de una aplicación: Cargando, Error, Éxito
@@ -61,12 +56,7 @@ class HomeViewModel
         fun likeTuit(tuit: Tuit) {
             viewModelScope.launch {
                 try {
-                    if (tuit.liked) {
-                        deletelikeTuitUseCase(tuit)
-                    } else {
-                        likeTuitUseCase(tuit)
-                    }
-                    tuit.liked = !tuit.liked
+                    tuitService.toggleLike(tuit)
                 } catch (e: HttpException) {
                     Log.e("HomeViewModel", "Error en la solicitud: ${e.message}")
                 } catch (e: Exception) {
@@ -79,16 +69,15 @@ class HomeViewModel
             fetchTuits()
         }
 
-        fun fetchTuits() {
+        private fun fetchTuits() {
             viewModelScope.launch {
-                tuitRepository
-                    .getTuits()
-                    .catch { exception ->
-                        Log.e("HomeViewModel", "Error fetching tuits", exception)
-                        _uiState.value = TuitUIState(FeedUIState.Error("Error"))
-                    }.collect { tuits ->
-                        _uiState.value = TuitUIState(FeedUIState.Success(tuits))
-                    }
+                try {
+                    val tuits = tuitService.fetchTuits()
+                    _uiState.value = TuitUIState(FeedUIState.Success(tuits))
+                } catch (exception: Exception) {
+                    Log.e("HomeViewModel", "Error fetching tuits", exception)
+                    _uiState.value = TuitUIState(FeedUIState.Error("Error"))
+                }
             }
         }
 
