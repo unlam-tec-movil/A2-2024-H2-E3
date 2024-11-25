@@ -16,6 +16,7 @@ fun CreateTuitScreen(
     initialContent: String = "",
     viewModel: CreateTuitViewModel = hiltViewModel(),
     onTuitCreated: () -> Unit, // Función para hacer algo después de publicar el tuit
+    onDraftSaved: () -> Unit,
     snackBarHostState: SnackbarHostState,
 ) {
     val tuitContent = remember { mutableStateOf(initialContent) }
@@ -53,6 +54,7 @@ fun CreateTuitScreen(
         onSaveDraft = { content ->
             if (content.isNotBlank()) {
                 viewModel.saveDraft(content)
+                onDraftSaved()
             }
         },
     )

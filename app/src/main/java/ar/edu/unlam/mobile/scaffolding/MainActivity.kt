@@ -129,7 +129,7 @@ fun MainScreen() {
                 )
             }
             composable(
-                route = NavigationRoutes.CreateTuitScreen.route,
+                NavigationRoutes.CreateTuitScreen.route,
                 arguments =
                     listOf(
                         navArgument("draftContent") {
@@ -142,7 +142,8 @@ fun MainScreen() {
 
                 CreateTuitScreen(
                     initialContent = draftContent,
-                    onTuitCreated = { navController.popBackStack() },
+                    onTuitCreated = { navController.navigate(NavigationRoutes.HomeScreen.route) },
+                    onDraftSaved = { navController.navigate(NavigationRoutes.DraftListScreen.route) },
                     snackBarHostState = snackbarHostState,
                 )
             }
