@@ -51,7 +51,6 @@ class CreateTuitViewModel
                         )
                     // Llama al repositorio para guardar el nuevo tuit
                     tuitRepository.createTuit(newTuit)
-
                     // Si fue bien, emitimos un estado de éxito
                     _uiState.emit(TuitUIState.Success("Tuit publicado exitosamente"))
                 } catch (e: Exception) {

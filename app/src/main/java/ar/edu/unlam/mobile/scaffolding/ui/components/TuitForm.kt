@@ -1,5 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -8,9 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-
-
 
 @Composable
 fun TuitForm(
@@ -18,25 +18,32 @@ fun TuitForm(
     onContentChange: (String) -> Unit,
     onSaveDraft: (String) -> Unit,
     onSubmit: (String) -> Unit,
-    modifier: Modifier = Modifier
-
+    modifier: Modifier = Modifier,
 ) {
     var content by remember { mutableStateOf(initialContent) }
+    val context = LocalContext.current
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(16.dp),
     ) {
         OutlinedTextField(
             value = content,
             onValueChange = {
                 content = it
-                onContentChange(it)},
-            modifier = Modifier.fillMaxWidth()
+                onContentChange(it)
+            },
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row {
-            Button(onClick = { onSaveDraft(content) }) {
+            Button(
+                onClick = {
+                    onSaveDraft(content)
+                    Toast.makeText(context, "Draft saved successfully", Toast.LENGTH_SHORT).show()
+                },
+            ) {
                 Text("Save")
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -44,6 +51,5 @@ fun TuitForm(
                 Text("Send")
             }
         }
-
     }
 }

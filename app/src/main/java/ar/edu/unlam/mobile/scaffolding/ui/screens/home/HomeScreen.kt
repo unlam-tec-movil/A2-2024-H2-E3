@@ -31,6 +31,10 @@ fun HomeScreen(
     val uiState: TuitUIState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchTuits()
+    }
+
     Scaffold(
         floatingActionButton = {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -38,10 +42,11 @@ fun HomeScreen(
                     onClick = {
                         navController.navigate(NavigationRoutes.CreateTuitScreen.route)
                     },
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                        .offset(y = (-60).dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                            .offset(y = (-60).dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
